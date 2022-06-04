@@ -2,14 +2,14 @@ const compras_functions = (() => {
     
     const _createRow = (id, precioCompra, precioVenta, stock, talla, color, marca, modelo) => {
         const $row = document.createElement("tr");
-        const $celda_id = document.createElement("th"); $celda_id.scope = "row"; $celda_id.classList.add("columnaID");  $celda_id.classList.add("text-center");
-        const $celda_pcompra = document.createElement("td"); $celda_pcompra.classList.add("text-center");
-        const $celda_pventa = document.createElement("td"); $celda_pventa.classList.add("text-center");
-        const $celda_stock = document.createElement("td"); $celda_stock.classList.add("text-center");
-        const $celda_talla = document.createElement("td"); $celda_talla.classList.add("text-center");
-        const $celda_color = document.createElement("td"); $celda_color.classList.add("text-center");
-        const $celda_marca = document.createElement("td"); $celda_marca.classList.add("text-center");
-        const $celda_modelo = document.createElement("td"); $celda_modelo.classList.add("text-center");
+        const $celda_id = document.createElement("th"); $celda_id.scope = "row"; $celda_id.classList.add("columnaID");  //$celda_id.classList.add("text-center");
+        const $celda_pcompra = document.createElement("td"); //$celda_pcompra.classList.add("text-center");
+        const $celda_pventa = document.createElement("td"); //$celda_pventa.classList.add("text-center");
+        const $celda_stock = document.createElement("td"); //$celda_stock.classList.add("text-center");
+        const $celda_talla = document.createElement("td"); //$celda_talla.classList.add("text-center");
+        const $celda_color = document.createElement("td"); //$celda_color.classList.add("text-center");
+        const $celda_marca = document.createElement("td"); //$celda_marca.classList.add("text-center");
+        const $celda_modelo = document.createElement("td"); //$celda_modelo.classList.add("text-center");
         const $celda_acciones = document.createElement("td"); $celda_acciones.classList.add("text-center");
         const $btn_editar = _createButton("editar");
         const $btn_borrar = _createButton("borrar");
