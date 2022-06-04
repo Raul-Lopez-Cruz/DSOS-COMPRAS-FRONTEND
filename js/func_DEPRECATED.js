@@ -1,4 +1,4 @@
-const functions_compras = (() => {
+const func_DEP = (() => {
     const $table = document.getElementById("tablaCompras");
     const $contadorProductos =  document.getElementById("contadorProductos");
     const $contadorModelos= document.getElementById("contadorModelos");

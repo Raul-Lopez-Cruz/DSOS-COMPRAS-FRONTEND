@@ -1,4 +1,4 @@
-const clientHttp = (() => {
+const fetch_DEP = (() => {
 
     const _getAll = (url, fnExito, fnFallo) => {
         fetch(url).

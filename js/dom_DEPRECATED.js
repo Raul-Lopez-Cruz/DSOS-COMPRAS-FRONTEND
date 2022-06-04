@@ -1,4 +1,4 @@
-const dom_compras = (() => {
+const dom_DEP = (() => {
     // --------------- DOM ELEMENTS --------------- 
     const $contadorProductos =  document.getElementById("contadorProductos");
     const $contadorModelos= document.getElementById("contadorModelos");
