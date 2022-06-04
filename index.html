@@ -16,7 +16,7 @@
         crossorigin="anonymous"></script>
     <!-- jQuery -->
     <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
-    <link rel="stylesheet" href="compras.css">
+    <link rel="stylesheet" href="css/compras.css">
 </head>
 
 <body class="bg-custom">
@@ -115,7 +115,7 @@
                 </div>
                 <form id="create_Form" class="needs-validation" novalidate>
                     <div class="modal-body">
-                        <div class="mb-4 position-relative">
+                        <div class="mb-2 position-relative">
                             <label for="create_input_pcompra">Precio de compra</label>
                             <input type="number" class="form-control input-custom" id="create_input_pcompra"
                                 placeholder="Introduce el precio de compra" min="0" max="1000000" step="0.01"
@@ -124,7 +124,7 @@
                                 Introduce un valor (positivo, con o sin decimales).
                             </div>
                         </div>
-                        <div class="mb-4 position-relative">
+                        <div class="mb-2 position-relative">
                             <label for="create_input_pventa">Precio de venta</label>
                             <input type="number" class="form-control input-custom" id="create_input_pventa" min="0"
                             max="1000000" step="0.01" placeholder="Introduce el precio de venta" required>
@@ -132,7 +132,7 @@
                                 Introduce un valor (positivo, con o sin decimales).
                             </div>
                         </div>
-                        <div class="mb-4 position-relative">
+                        <div class="mb-2 position-relative">
                             <label for="create_input_stock">Stock</label>
                             <input type="number" class="form-control input-custom" id="create_input_stock" min="0"
                                 step="1" max="999999" placeholder="Introduce el stock del producto" required>
@@ -140,7 +140,7 @@
                                 Debe ser un número entero mayor o igual a cero.
                             </div>
                         </div>
-                        <div class="mb-4 position-relative">
+                        <div class="mb-2 position-relative">
                             <label for="create_input_talla">Talla</label>
                             <input type="number" class="form-control input-custom" id="create_input_talla"
                                 placeholder="Escribe el monto total de la compra" min="1" max="100" step="0.5"
@@ -149,7 +149,7 @@
                                 Introduce un valor (positivo, con o sin decimales).
                             </div>
                         </div>
-                        <div class="mb-4 position-relative">
+                        <div class="mb-2 position-relative">
                             <label for="create_input_color">Color</label>
                             <input type="text" class="form-control input-custom" id="create_input_color"
                                 placeholder="Escribe el color o colores del producto" maxlength="20"
@@ -158,7 +158,7 @@
                                 Color o colores del producto.
                             </div>
                         </div>
-                        <div class="mb-4 position-relative">
+                        <div class="mb-2 position-relative">
                             <label for="create_input_marca">Marca</label>
                             <input type="text" class="form-control input-custom" id="create_input_marca"
                                 placeholder="Escribe la marca del producto" maxlength="20"
@@ -167,7 +167,7 @@
                                 Marca del producto.
                             </div>
                         </div>
-                        <div class="mb-4 position-relative">
+                        <div class="position-relative">
                             <label for="create_input_modelo">Modelo</label>
                             <input type="text" class="form-control input-custom" id="create_input_modelo"
                                 placeholder="Escribe el modelo del producto" maxlength="20"
@@ -221,7 +221,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content fg-custom">
                 <div class="modal-header">
-                    <h3 class="modal-title" id="modalEditarProductoLabel">Editar compra</h3>
+                    <h3 class="modal-title" id="modalEditarProductoLabel">Editar producto</h3>
                     <button type="button" class="btn btn-s-close" data-bs-dismiss="modal" aria-label="close">
                         <i class="bi bi-x-lg"></i>
                     </button>
@@ -231,12 +231,12 @@
 
                         <small class="text-muted">No se permite editar el ID</small>
 
-                        <div class="form-floating mb-3">
+                        <div class="form-floating mb-2">
                             <input type="number" class="form-control input-custom" id="edit_input_id" disabled="true"
                                 required>
                             <label for="nombreProducto">ID del producto</label>
                         </div>
-                        <div class="mb-4 position-relative">
+                        <div class="mb-2 position-relative">
                             <label for="edit_input_pcompra">Precio de compra</label>
                             <input type="number" class="form-control input-custom" id="edit_input_pcompra"
                                 placeholder="Introduce el precio de compra" min="0" max="1000000" step="0.01"
@@ -245,7 +245,7 @@
                                 Introduce un valor (positivo, con o sin decimales).
                             </div>
                         </div>
-                        <div class="mb-4 position-relative">
+                        <div class="mb-2 position-relative">
                             <label for="edit_input_pventa">Precio de venta</label>
                             <input type="number" class="form-control input-custom" id="edit_input_pventa" min="0"
                             max="1000000" step="0.01" placeholder="Introduce el precio de venta" required>
@@ -253,7 +253,7 @@
                                 Introduce un valor (positivo, con o sin decimales).
                             </div>
                         </div>
-                        <div class="mb-4 position-relative">
+                        <div class="mb-2 position-relative">
                             <label for="edit_input_stock">Stock</label>
                             <input type="number" class="form-control input-custom" id="edit_input_stock" min="0"
                                 step="1" max="999999" placeholder="Introduce el stock del producto" required>
@@ -261,7 +261,7 @@
                                 Debe ser un número entero mayor o igual a cero.
                             </div>
                         </div>
-                        <div class="mb-4 position-relative">
+                        <div class="mb-2 position-relative">
                             <label for="edit_input_talla">Talla</label>
                             <input type="number" class="form-control input-custom" id="edit_input_talla"
                                 placeholder="Escribe el monto total de la compra" min="1" max="100" step="0.5"
@@ -270,7 +270,7 @@
                                 Introduce un valor (positivo, con o sin decimales).
                             </div>
                         </div>
-                        <div class="mb-4 position-relative">
+                        <div class="mb-2 position-relative">
                             <label for="edit_input_color">Color</label>
                             <input type="text" class="form-control input-custom" id="edit_input_color"
                                 placeholder="Escribe el color o colores del producto" maxlength="20"
@@ -279,7 +279,7 @@
                                 Color o colores del producto.
                             </div>
                         </div>
-                        <div class="mb-4 position-relative">
+                        <div class="mb-2 position-relative">
                             <label for="edit_input_marca">Marca</label>
                             <input type="text" class="form-control input-custom" id="edit_input_marca"
                                 placeholder="Escribe la marca del producto" maxlength="20"
@@ -288,7 +288,7 @@
                                 Marca del producto.
                             </div>
                         </div>
-                        <div class="mb-4 position-relative">
+                        <div class="position-relative">
                             <label for="edit_input_modelo">Modelo</label>
                             <input type="text" class="form-control input-custom" id="edit_input_modelo"
                                 placeholder="Escribe el modelo del producto" maxlength="20"
