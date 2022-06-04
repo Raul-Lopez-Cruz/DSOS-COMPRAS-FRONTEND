@@ -1,46 +1,56 @@
 const functions_compras = (() => {
     const $table = document.getElementById("tablaCompras");
-    const $contadorTotal =  document.getElementById("contadorTotal");
-    const $contadorCompras= document.getElementById("contadorCompras");
+    const $contadorProductos =  document.getElementById("contadorProductos");
+    const $contadorModelos= document.getElementById("contadorModelos");
 
-    const _createRow = (id, total, fecha, cliente, producto) => {
+    const _createRow = (id, precioCompra, precioVenta, stock, talla, color, marca, modelo) => {
         //Creación de celdas
         const $row = document.createElement("tr");
         const $celda_id = document.createElement("th"); $celda_id.scope = "row"; $celda_id.className="columnaID";
-        const $celda_total = document.createElement("td");
-        const $celda_fecha = document.createElement("td");
-        const $celda_cliente = document.createElement("td");
-        const $celda_producto = document.createElement("td");
+        const $celda_pcompra = document.createElement("td");
+        const $celda_pventa = document.createElement("td");
+        const $celda_stock = document.createElement("td");
+        const $celda_talla = document.createElement("td");
+        const $celda_color = document.createElement("td");
+        const $celda_marca = document.createElement("td");
+        const $celda_modelo = document.createElement("td");
         const $celda_acciones = document.createElement("td");
         const $btn_editar = _createButton("editar");
         const $btn_borrar = _createButton("borrar");
-        const $btn_detalles = _createButton("info");
+        //const $btn_detalles = _createButton("info");
 
         //Asignación de valores
-        $celda_id.innerText = intToFixedLength(id,8);
-        $celda_total.innerText = moneyFormat(total);
-        $celda_fecha.innerText = fecha;
-        $celda_cliente.innerText = intToFixedLength(cliente,8);
-        $celda_producto.innerHTML = intToFixedLength(producto,8);
+        $celda_id.innerText = intToFixedLength(id,4);
+        $celda_pcompra.innerText = moneyFormat(precioCompra);
+        $celda_pventa.innerText = moneyFormat(precioVenta);
+        $celda_stock.innerText = stock;
+        $celda_talla.innerText = talla;
+        $celda_color.innerText = color;
+        $celda_marca.innerText = marca;
+        $celda_modelo.innerText = modelo;
+
         //Agregar celdas a la fila
         $celda_acciones.appendChild($btn_editar);
         $celda_acciones.appendChild($btn_borrar);
-        $celda_acciones.appendChild($btn_detalles);
+        //$celda_acciones.appendChild($btn_detalles);
         $row.appendChild($celda_id);
-        $row.appendChild($celda_total);
-        $row.appendChild($celda_fecha);
-        $row.appendChild($celda_cliente);
-        $row.appendChild($celda_producto);
+        $row.appendChild($celda_pcompra);
+        $row.appendChild($celda_pventa);
+        $row.appendChild($celda_stock);
+        $row.appendChild($celda_talla);
+        $row.appendChild($celda_color);
+        $row.appendChild($celda_marca);
+        $row.appendChild($celda_modelo);
         $row.appendChild($celda_acciones);
 
         //Agregar la fila a la tabla
         $table.appendChild($row);
 
         //Actualiza información desplegada
-        const comprasActual = parseInt($contadorCompras.innerText);
-        const totalActual = parseFloat($contadorTotal.innerText.replace(',',''));
-        $contadorCompras.innerText = comprasActual+1;
-        $contadorTotal.innerText = moneyFormat(totalActual+total).replace('$','');
+        const numModelos = parseInt($contadorModelos.innerText);
+        const numProductos = parseFloat($contadorProductos.innerText.replace(',',''));
+        $contadorModelos.innerText = numModelos+1;
+        $contadorProductos.innerText =numProductos+stock;
     };
 
     const _createButton = (texto) => {
@@ -63,7 +73,7 @@ const functions_compras = (() => {
                 z.parentNode.replaceChild(z.cloneNode(1), z);
                 z = document.getElementById("delete_ok");
                 z.addEventListener("click", () => {
-                    clientHttp.delete("https://dsos-test.herokuapp.com/api/compras/", id);
+                    clientHttp.delete("https://compras-develop.herokuapp.com/api/compras/", id);
                     //Delete row (without reload page)
                     $row.parentNode.removeChild($row);
                     $('#modalConfirmarEliminar').modal('hide');
@@ -82,17 +92,23 @@ const functions_compras = (() => {
                 id = $row.querySelector('.columnaID').innerText;
                 //Get values
                 var columnas = $row.childNodes;
-                temp_id = columnas[0].innerText;
-                temp_total = columnas[1].innerText.replace('$','').replace(',','');
-                temp_date = columnas[2].innerText.replace(' ','T');
-                temp_client = columnas[3].innerText;
-                temp_product = columnas[4].innerText;
+                temp_id =       columnas[0].innerText;
+                temp_pventa =   columnas[1].innerText.replace('$','').replace(',','');
+                temp_pcompra =  columnas[2].innerText.replace('$','').replace(',','');
+                temp_stock =    columnas[3].innerText;
+                temp_talla =    columnas[4].innerText;
+                temp_color =    columnas[5].innerText;
+                temp_marca =    columnas[6].innerText;
+                temp_modelo =   columnas[7].innerText;
                 //Show values
                 document.getElementById("edit_input_id").value = temp_id;
-                document.getElementById("edit_input_total").value = temp_total;
-                document.getElementById("edit_input_date").value = temp_date;
-                document.getElementById("edit_input_client").value = temp_client;
-                document.getElementById("edit_input_product").value = temp_product;
+                document.getElementById("edit_input_pventa").value = temp_pventa;
+                document.getElementById("edit_input_pcompra").value = temp_pcompra;
+                document.getElementById("edit_input_stock").value = temp_stock;
+                document.getElementById("edit_input_talla").value = temp_talla;
+                document.getElementById("edit_input_color").value = temp_color;
+                document.getElementById("edit_input_marca").value = temp_marca;
+                document.getElementById("edit_input_modelo").value = temp_modelo;
                 //Reasignar edit target
                 z = document.getElementById("edit_ok");
                 z.parentNode.replaceChild(z.cloneNode(1), z);
@@ -103,18 +119,25 @@ const functions_compras = (() => {
                     //Get NEW values
                     if(todoOK){
                         data = {
-                            costoTotal: document.getElementById("edit_input_total").value,
-                            fechaCompra: document.getElementById("edit_input_date").value,
-                            idCliente: document.getElementById("edit_input_client").value,
-                            idProducto: document.getElementById("edit_input_product").value
+                            idProducto: parseInt(document.getElementById("edit_input_id").value),
+                            precioCompra: parseFloat(document.getElementById("edit_input_pcompra").value),
+                            precioVenta: parseFloat(document.getElementById("edit_input_pventa").value),
+                            stock: parseInt(document.getElementById("edit_input_stock").value),
+                            talla: document.getElementById("edit_input_talla").value,
+                            color: document.getElementById("edit_input_color").value,
+                            marca: document.getElementById("edit_input_marca").value,
+                            modelo: document.getElementById("edit_input_modelo").value
                         };
                         //Send request
-                        clientHttp.put("https://dsos-test.herokuapp.com/api/compras/", id, data);
+                        clientHttp.put("https://compras-develop.herokuapp.com/api/compras/", id, data);
                         //Update row (without reload page)
-                        columnas[1].innerText=moneyFormat(document.getElementById("edit_input_total").value);
-                        columnas[2].innerText=document.getElementById("edit_input_date").value.replace('T',' ');
-                        columnas[3].innerText=intToFixedLength(document.getElementById("edit_input_client").value,8);
-                        columnas[4].innerText=intToFixedLength(document.getElementById("edit_input_product").value,8);
+                        columnas[1].innerText = '$'+data.precioVenta;
+                        columnas[2].innerText = '$'+data.precioCompra;
+                        columnas[3].innerText = data.stock;
+                        columnas[4].innerText = data.talla;
+                        columnas[5].innerText = data.color;
+                        columnas[6].innerText = data.marca;
+                        columnas[7].innerText = data.modelo;
                         $('#modalEditarProducto').modal('hide');
                     }
                 });
@@ -148,15 +171,15 @@ const functions_compras = (() => {
     const fetchTotals = (response) =>{
         var sumaTotal=0;
         for (let index = 0; index < response.data.length; index++) {
-            sumaTotal = sumaTotal + response.data[index].costoTotal; 
+            sumaTotal = sumaTotal + response.data[index].stock; 
         }
-        $contadorCompras.innerText=response.data.length;
-        $contadorTotal.innerText=moneyFormat(sumaTotal);
+        $contadorModelos.innerText=response.data.length;
+        $contadorProductos.innerText=sumaTotal;
     }
 
     const _updateInfo = (response)=>{
         console.log(response);
-        clientHttp.getAll("https://dsos-test.herokuapp.com/api/compras/", fetchTotals, console.log);
+        clientHttp.getAll("https://compras-develop.herokuapp.com/api/compras/", fetchTotals, console.log);
     };
 
 

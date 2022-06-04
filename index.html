@@ -33,7 +33,7 @@
                         <a class="nav-link active" aria-current="page" href="">Panel de compras</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link disabled" href="vender.html">Base de datos</a>
+                        <a class="nav-link" href="https://compras-develop.herokuapp.com/api/compras/" target="_blank">Base de datos</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link disabled">Documentación</a>
@@ -58,22 +58,22 @@
             <div class="col-md-4 col-6 my-1">
                 <div class="card text-center fg-custom pb-4">
                     <div class="card-body"> 
-                        <d class="d-none d-sm-block">NÚMERO DE COMPRAS</d>
-                        <d class="d-block d-sm-none">COMPRAS</d>
+                        <d class="d-none d-sm-block">MODELOS DIFERENTES</d>
+                        <d class="d-block d-sm-none">MODELOS</d>
                     </div>
-                    <icon class="fs-3 d-inline"><i class="px-1 bi bi-cart-check round-yellow"></i>
-                        <p class="fs-3 d-inline color-amarillo" id="contadorCompras">0</p>
+                    <icon class="fs-3 d-inline"><i class="px-1 bi bi-columns-gap round-yellow"></i>
+                        <p class="fs-3 d-inline color-amarillo" id="contadorModelos">0</p>
                     </icon>
                 </div>
             </div>
             <div class="col-md-4 col-6 my-1">
                 <div class="card text-center fg-custom pb-4">
                     <div class="card-body">
-                        <d class="d-none d-sm-block">MONTO TOTAL</d>
-                        <d class="d-block d-sm-none">TOTAL</d>
+                        <d class="d-none d-sm-block">NUMERO DE PRODUCTOS</d>
+                        <d class="d-block d-sm-none">PRODUCTOS</d>
                         </div>
-                    <icon class="fs-3 d-inline"><i class="px-1 bi bi-currency-dollar round-green"></i>
-                        <p class="fs-3 d-inline color-verde" id="contadorTotal">0</p>
+                    <icon class="fs-3 d-inline"><i class="px-1 bi bi-box-seam round-green"></i>
+                        <p class="fs-3 d-inline color-verde" id="contadorProductos">0</p>
                     </icon>
                 </div>
             </div>
@@ -81,18 +81,19 @@
     </div>
     <!-- TABLE BODY -->
     <div class="container-lg table-responsive text-nowrap fg-custom py-3">
-        <h5 class="">Tabla de compras</h5>
-        <input class="form-control form-control-sm input-custom2 my-3" type="number" id="searchBar" placeholder="Filtrar por ID"
-        oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*?)\..*/g, '$1');">
+        <h5 class="">Tabla de productos</h5>
+        <input class="form-control form-control-sm input-custom2 my-3" type="text" id="searchBar" placeholder="Buscar producto (id, color, marca o modelo)">
         <table class="table">
             <thead class="table-custom-title">
                 <tr>
                     <th scope="col">ID</th>
-                    <th scope="col">Total</th>
-                    <th scope="col">Fecha y hora</th>
-                    <th scope="col">ID Cliente</th>
-                    <th scope="col">ID Producto</th>
-                    <th scope="col">Acciones</th>
+                    <th scope="col">Precio de compra</th>
+                    <th scope="col">Precio de venta</th>
+                    <th scope="col">Stock</th>
+                    <th scope="col">Talla</th>
+                    <th scope="col">Color</th>
+                    <th scope="col">Marca</th>
+                    <th scope="col">Modelo</th>
                 </tr>
             </thead>
             <tbody id="tablaCompras" class="table-custom-body">
@@ -106,7 +107,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content fg-custom">
                 <div class="modal-header">
-                    <h3 class="modal-title" id="modalAgregarProductoLabel">Nuevo registro</h3>
+                    <h3 class="modal-title" id="modalAgregarProductoLabel">Registrar nuevo producto</h3>
                     <button type="button" class="btn btn-s-close" data-bs-dismiss="modal" aria-label="close">
                         <i class="bi bi-x-lg"></i>
                     </button>
@@ -114,32 +115,69 @@
                 <form id="create_Form" class="needs-validation" novalidate>
                     <div class="modal-body">
                         <div class="mb-4 position-relative">
-                            <label for="totalCompra">Total</label>
-                            <input type="number" class="form-control input-custom" id="create_input_total"
-                                placeholder="Escribe el monto total de la compra" min="0" max="1000000" step="0.01"
+                            <label for="create_input_pcompra">Precio de compra</label>
+                            <input type="number" class="form-control input-custom" id="create_input_pcompra"
+                                placeholder="Introduce el precio de compra" min="0" max="1000000" step="0.01"
                                 required>
-                            <div class="invalid-tooltip">
+                            <div class="invalid-tooltip" id="pcompra_invalid">
                                 Introduce un valor (positivo, con o sin decimales).
                             </div>
                         </div>
                         <div class="mb-4 position-relative">
-                            <label for="clienteCompra">ID del cliente</label>
-                            <input type="number" class="form-control input-custom" id="create_input_client" min="1"
-                                step="1" placeholder="Introduce el ID del cliente" maxlength="10" required>
-                            <div class="invalid-tooltip">
-                                Debe ser un número entero positivo.
+                            <label for="create_input_pventa">Precio de venta</label>
+                            <input type="number" class="form-control input-custom" id="create_input_pventa" min="0"
+                            max="1000000" step="0.01" placeholder="Introduce el precio de venta" required>
+                            <div class="invalid-tooltip"  id="pventa_invalid">
+                                Introduce un valor (positivo, con o sin decimales).
                             </div>
                         </div>
-                        <div class="mb-2 position-relative">
-                            <label for="productoCompra">ID del producto</label>
-                            <input type="number" class="form-control input-custom" id="create_input_product" min="1"
-                                step="1" placeholder="Introduce el ID del producto" required>
+                        <div class="mb-4 position-relative">
+                            <label for="create_input_stock">Stock</label>
+                            <input type="number" class="form-control input-custom" id="create_input_stock" min="0"
+                                step="1" max="999999" placeholder="Introduce el stock del producto" required>
+                            <div class="invalid-tooltip"  id="stock_invalid">
+                                Debe ser un número entero mayor o igual a cero.
+                            </div>
+                        </div>
+                        <div class="mb-4 position-relative">
+                            <label for="create_input_talla">Talla</label>
+                            <input type="number" class="form-control input-custom" id="create_input_talla"
+                                placeholder="Escribe el monto total de la compra" min="1" max="100" step="0.5"
+                                required>
+                            <div class="invalid-tooltip"  id="talla_invalid">
+                                Introduce un valor (positivo, con o sin decimales).
+                            </div>
+                        </div>
+                        <div class="mb-4 position-relative">
+                            <label for="create_input_color">Color</label>
+                            <input type="text" class="form-control input-custom" id="create_input_color"
+                                placeholder="Escribe el color o colores del producto" maxlength="20"
+                                required>
                             <div class="invalid-tooltip">
-                                Debe ser un número entero positivo.
+                                Color o colores del producto.
+                            </div>
+                        </div>
+                        <div class="mb-4 position-relative">
+                            <label for="create_input_marca">Marca</label>
+                            <input type="text" class="form-control input-custom" id="create_input_marca"
+                                placeholder="Escribe la marca del producto" maxlength="20"
+                                required>
+                            <div class="invalid-tooltip">
+                                Marca del producto.
+                            </div>
+                        </div>
+                        <div class="mb-4 position-relative">
+                            <label for="create_input_modelo">Modelo</label>
+                            <input type="text" class="form-control input-custom" id="create_input_modelo"
+                                placeholder="Escribe el modelo del producto" maxlength="20"
+                                required>
+                            <div class="invalid-tooltip">
+                                Modelo del producto.
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
+                        <small class="text-warning d-none" id="advertencia">Precaución: El precio de venta es menor al precio de compra.</small>
                         <button type="submit" id="create_ok" class="btn btn-s-verde">Guardar</button>
                         <button type="button" id="create_cancel" class="btn btn-s-amarillo"
                             data-bs-dismiss="modal">Cancelar</button>
@@ -155,7 +193,7 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content fg-custom">
                 <div class="modal-header">
-                    <h3 class="modal-title" id="modalConfirmarEliminarLabel">Requiere confirmación</h3>
+                    <h3 class="modal-title" id="modalConfirmarEliminarLabel">Se requiere confirmación</h3>
                     <button type="button" class="btn btn-s-close" data-bs-dismiss="modal" aria-label="close">
                         <i class="bi bi-x-lg"></i>
                     </button>
@@ -190,36 +228,73 @@
                 <form id="edit_Form" class="was-validated">
                     <div class="modal-body">
 
-                        <small class="text-muted">Por cuestiones de integridad de la BD, no se permite editar el
-                            ID</small>
+                        <small class="text-muted">No se permite editar el ID</small>
 
                         <div class="form-floating mb-3">
                             <input type="number" class="form-control input-custom" id="edit_input_id" disabled="true"
                                 required>
-                            <label for="nombreProducto">ID de la compra</label>
+                            <label for="nombreProducto">ID del producto</label>
                         </div>
-                        <div class="form-floating mb-3">
-                            <input type="number" class="form-control input-custom" id="edit_input_total"
-                                placeholder="Escribe el monto total de la compra" lang="es-419" min="0" max="1000000"
-                                step="0.01" required>
-                            <label for="nombreProducto">Total de la compra</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input type="datetime-local" class="form-control input-custom" id="edit_input_date"
-                                min="2020-01-01T00:00" max="2030-12-31T23:59" step="60" required>
-                            <label for="precioProducto">Fecha de la compra</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input type="number" class="form-control input-custom" id="edit_input_client"
-                                placeholder="Escribe el ID del cliente (hasta 8 dígitos)" min="0" max="99999999"
-                                step="1" required>
-                            <label for="existenciaProducto">ID del cliente</label>
-                        </div>
-                        <div class="form-floating mb-3">
-                            <input type="number" class="form-control input-custom" id="edit_input_product"
-                                placeholder="Escribe ID del producto (hasta 8 dígitos)" min="0" max="99999999" step="1"
+                        <div class="mb-4 position-relative">
+                            <label for="edit_input_pcompra">Precio de compra</label>
+                            <input type="number" class="form-control input-custom" id="edit_input_pcompra"
+                                placeholder="Introduce el precio de compra" min="0" max="1000000" step="0.01"
                                 required>
-                            <label for="precioProducto">ID del Producto</label>
+                            <div class="invalid-tooltip" id="pcompra_invalid">
+                                Introduce un valor (positivo, con o sin decimales).
+                            </div>
+                        </div>
+                        <div class="mb-4 position-relative">
+                            <label for="edit_input_pventa">Precio de venta</label>
+                            <input type="number" class="form-control input-custom" id="edit_input_pventa" min="0"
+                            max="1000000" step="0.01" placeholder="Introduce el precio de venta" required>
+                            <div class="invalid-tooltip"  id="pventa_invalid">
+                                Introduce un valor (positivo, con o sin decimales).
+                            </div>
+                        </div>
+                        <div class="mb-4 position-relative">
+                            <label for="edit_input_stock">Stock</label>
+                            <input type="number" class="form-control input-custom" id="edit_input_stock" min="0"
+                                step="1" max="999999" placeholder="Introduce el stock del producto" required>
+                            <div class="invalid-tooltip"  id="stock_invalid">
+                                Debe ser un número entero mayor o igual a cero.
+                            </div>
+                        </div>
+                        <div class="mb-4 position-relative">
+                            <label for="edit_input_talla">Talla</label>
+                            <input type="number" class="form-control input-custom" id="edit_input_talla"
+                                placeholder="Escribe el monto total de la compra" min="1" max="100" step="0.5"
+                                required>
+                            <div class="invalid-tooltip"  id="talla_invalid">
+                                Introduce un valor (positivo, con o sin decimales).
+                            </div>
+                        </div>
+                        <div class="mb-4 position-relative">
+                            <label for="edit_input_color">Color</label>
+                            <input type="text" class="form-control input-custom" id="edit_input_color"
+                                placeholder="Escribe el color o colores del producto" maxlength="20"
+                                required>
+                            <div class="invalid-tooltip">
+                                Color o colores del producto.
+                            </div>
+                        </div>
+                        <div class="mb-4 position-relative">
+                            <label for="edit_input_marca">Marca</label>
+                            <input type="text" class="form-control input-custom" id="edit_input_marca"
+                                placeholder="Escribe la marca del producto" maxlength="20"
+                                required>
+                            <div class="invalid-tooltip">
+                                Marca del producto.
+                            </div>
+                        </div>
+                        <div class="mb-4 position-relative">
+                            <label for="edit_input_modelo">Modelo</label>
+                            <input type="text" class="form-control input-custom" id="edit_input_modelo"
+                                placeholder="Escribe el modelo del producto" maxlength="20"
+                                required>
+                            <div class="invalid-tooltip">
+                                Modelo del producto.
+                            </div>
                         </div>
                     </div>
                     <div class="modal-footer">
