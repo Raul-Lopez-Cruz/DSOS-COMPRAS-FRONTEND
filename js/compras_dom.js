@@ -30,5 +30,5 @@ const compras_dom = (() => {
     $searchBar.addEventListener("keyup", compras_functions.filtrarTabla);
 
     // --------------- CALLS ---------------
-    compras_fetch.get("https://compras-develop.herokuapp.com/api/compras/", compras_functions.loadTable, compras_functions.logError);
+    compras_fetch.get("https://compras-testing.herokuapp.com/api/compras/", compras_functions.loadTable, compras_functions.logError);
 })();

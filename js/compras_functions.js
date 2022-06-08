@@ -70,7 +70,7 @@ const compras_functions = (() => {
                 aux.parentNode.replaceChild(aux.cloneNode(1), aux);
                 aux = document.getElementById("delete_ok");
                 aux.addEventListener("click", () => {
-                    compras_fetch.delete("https://compras-develop.herokuapp.com/api/compras/"+id);
+                    compras_fetch.delete("https://compras-testing.herokuapp.com/api/compras/"+id);
                     $row.parentNode.removeChild($row);
                     $('#modalConfirmarEliminar').modal('hide');
                 });
@@ -119,7 +119,7 @@ const compras_functions = (() => {
                             marca: document.getElementById("edit_input_marca").value,
                             modelo: document.getElementById("edit_input_modelo").value
                         };
-                        compras_fetch.put("https://compras-develop.herokuapp.com/api/compras/"+id, data);
+                        compras_fetch.put("https://compras-testing.herokuapp.com/api/compras/"+id, data);
                         columnas[1].innerText = '$'+data.precioCompra;
                         columnas[2].innerText = '$'+data.precioVenta;
                         columnas[3].innerText = data.stock;
@@ -160,7 +160,7 @@ const compras_functions = (() => {
 
     const _updateInfo = (response)=>{
         console.log(response);
-        compras_fetch.get("https://compras-develop.herokuapp.com/api/compras/", _fetchTotals, _logError);
+        compras_fetch.get("https://compras-testing.herokuapp.com/api/compras/", _fetchTotals, _logError);
     };
 
     const _reiniciaCampos = ()=> {
@@ -238,7 +238,7 @@ const compras_functions = (() => {
                 marca: marca,
                 modelo: modelo
             };
-            compras_fetch.post("https://compras-develop.herokuapp.com/api/compras/", data, _postExito, _logError);
+            compras_fetch.post("https://compras-testing.herokuapp.com/api/compras/", data, _postExito, _logError);
             $('#modalAgregarProducto').modal('hide');
             form.classList.remove("was-validated");
             _reiniciaCampos();
