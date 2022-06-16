@@ -129,8 +129,6 @@
     box-shadow: 0 0 .25rem #39da8a;
 }
 
-
-
 .fg-custom{
     background-color: #283144;
     color: #d8deea;
@@ -141,16 +139,6 @@
     background-color: #1b212e;
     color: #d8deea;
 }
-
-input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
-  }
-  
-  /* Firefox */
-  input[type=number] {
-    -moz-appearance: textfield;
-  }
 
 .input-custom{
     background-color: #252d3f;

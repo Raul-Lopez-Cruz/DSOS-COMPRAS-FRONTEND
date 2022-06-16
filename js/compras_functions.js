@@ -167,10 +167,10 @@ const compras_functions = (() => {
         document.getElementById("create_input_pcompra").value = "";
         document.getElementById("create_input_pventa").value = "";
         document.getElementById("create_input_stock").value = "";
-        document.getElementById("create_input_talla").value = "";
+        document.getElementById("create_input_talla").value = "Selecciona una talla...";
         document.getElementById("create_input_color").value = "";
-        document.getElementById("create_input_marca").value = "";
-        document.getElementById("create_input_modelo").value = "";
+        document.getElementById("create_input_marca").value = "Selecciona una marca...";
+        document.getElementById("create_input_modelo").value = "Primero selecciona una marca.";
         document.getElementById("create_Form").classList.remove("was-validated");
     };
 
@@ -215,9 +215,95 @@ const compras_functions = (() => {
             document.getElementById("advertencia").classList.add("d-block");
         }
     };
+    
+    const _fillSelects = ()=>{
+        //fill selector create_input_modelo with data depending on the selected value in create_input_marca
+        const marca = document.getElementById("create_input_marca").value;
+        const modelo = document.getElementById("create_input_modelo");
+        if(marca === "" || marca === "Selecciona una marca..."){
+            modelo.innerHTML = "<option value=''>Primero selecciona una marca.</option>";
+        }//if adidas is selected, then the options in modelo will be: Duramo SL, Ultraboost, Racer TR21 and Adizero Boston.
+        else if(marca === "Adidas"){
+            modelo.innerHTML = "<option value=''>Selecciona un modelo...</option><option value='Duramo SL'>Duramo SL</option><option value='Ultraboost'>Ultraboost</option><option value='Racer TR21'>Racer TR21</option><option value='Adizero Boston'>Adizero Boston</option><option value='ASWEEMOVE'>ASWEEMOVE</option>";
+        }//if nike is selected, then the options in modelo will be: Revolution 6, Jordan Essentials, Dri-FIT, LeBron 19, and Air Max 1.
+        else if(marca === "Nike"){
+            modelo.innerHTML = "<option value=''>Selecciona un modelo...</option><option value='Revolution 6'>Revolution 6</option><option value='Jordan Essentials'>Jordan Essentials</option><option value='Dri-FIT'>Dri-FIT</option><option value='LeBron 19'>LeBron 19</option><option value='Air Max 1'>Air Max 1</option>";
+        }//if underarmour is selected, then the options in modelo will be: UA Hovr, UA Charged, UA Surge, UA Mojo, UA Flow and UA Valsetz.
+        else if(marca === "Underarmour"){
+            modelo.innerHTML = "<option value=''>Selecciona un modelo...</option><option value='UA Hovr'>UA Hovr</option><option value='UA Charged'>UA Charged</option><option value='UA Surge'>UA Surge</option><option value='UA Mojo'>UA Mojo</option><option value='UA Flow'>UA Flow</option><option value='UA Valsetz'>UA Valsetz</option>";
+        }//if Reebok is selected, then the options in modelo will be: Resonator Mid, Royal Techque, Turbo Restyle, Leather Pj, Nanoflex TR, Nano X2.
+        else if(marca === "Reebok"){
+            modelo.innerHTML = "<option value=''>Selecciona un modelo...</option><option value='Resonator Mid'>Resonator Mid</option><option value='Royal Techque'>Royal Techque</option><option value='Turbo Restyle'>Turbo Restyle</option><option value='Leather Pj'>Leather Pj</option><option value='Nanoflex TR'>Nanoflex TR</option><option value='Nano X2'>Nano X2</option>";
+        }//if Converse is selected, then the options in modelo will be: All Star, GLF 2.0, Chuck Taylor, Aeon Active Cx, Stüssy Chuck and Weapon Cx.
+        else if(marca === "Converse"){
+            modelo.innerHTML = "<option value=''>Selecciona un modelo...</option><option value='All Star'>All Star</option><option value='GLF 2.0'>GLF 2.0</option><option value='Chuck Taylor'>Chuck Taylor</option><option value='Aeon Active Cx'>Aeon Active Cx</option><option value='Stüssy Chuck'>Stüssy Chuck</option><option value='Weapon Cx'>Weapon Cx</option>";
+        }
+        else{
+            modelo.innerHTML = "<option value=''>Selecciona un modelo...</option>";
+        }
+    };
+
+    const _validateTalla = (event) => {
+        const input = event.target;
+        const value = input.value;
+        const invalid_tooltip = input.nextElementSibling;
+        if (value === '' || isNaN(value)) {
+            input.setCustomValidity('Debe seleccionar una talla');
+            invalid_tooltip.innerText = 'Debe seleccionar una talla';
+        } else {
+            input.setCustomValidity('');
+        }
+    }
+
+    const _validarMarca = (event) => {
+        const input = event.target;
+        const value = input.value;
+        const invalid_tooltip = input.nextElementSibling;
+        if (value === 'Selecciona una marca...') {
+            input.setCustomValidity('Debe seleccionar una marca');
+            invalid_tooltip.innerText = 'Debe seleccionar una marca';
+        } else {
+            input.setCustomValidity('');
+        }
+    }
+
+    const _validarModelo = (event) => {
+        const input = event.target;
+        const value = input.value;
+        const invalid_tooltip = input.nextElementSibling;
+        if (value === 'Selecciona un modelo...' || value === 'Primero selecciona una marca.') {
+            input.setCustomValidity('Debe seleccionar un modelo');
+            invalid_tooltip.innerText = 'Debe seleccionar un modelo';
+        } else {
+            input.setCustomValidity('');
+        }
+    }
 
     const _crearRegistro = (target) => {
         target.preventDefault();
+        
+        const marca = document.getElementById("create_input_marca").value;
+        const modelo = document.getElementById("create_input_modelo").value;
+        //check marca
+        if (marca === "Selecciona una marca...") {
+            document.getElementById("create_input_marca").setCustomValidity('Debe seleccionar una marca');
+        }else{
+            document.getElementById("create_input_marca").setCustomValidity('');
+        }
+        //check modelo
+        if (modelo === "Primero selecciona una marca." || modelo === "Selecciona un modelo...") {
+            document.getElementById("create_input_modelo").setCustomValidity('Debe seleccionar un modelo');
+        }else{
+            document.getElementById("create_input_modelo").setCustomValidity('');
+        }
+
+        //check talla value
+        var talla = document.getElementById("create_input_talla").value;
+        if(isNaN(talla)){
+            document.getElementById("create_input_talla").setCustomValidity("Debe seleccionar una talla válida");
+        }else{
+            document.getElementById("create_input_talla").setCustomValidity("");
+        }
         form = document.getElementById("create_Form");
         form.classList.add("was-validated");
         var todoOK = form.checkValidity();
@@ -316,6 +402,10 @@ const compras_functions = (() => {
         createButton: _createButton,
         intToFixedLength: _intToFixedLength,
         updateInfo: _updateInfo,
-        fetchTotals: _fetchTotals
+        validateTalla: _validateTalla,
+        fetchTotals: _fetchTotals,
+        fillSelects: _fillSelects,
+        validarMarca: _validarMarca,
+        validarModelo: _validarModelo,
     }
 })();
