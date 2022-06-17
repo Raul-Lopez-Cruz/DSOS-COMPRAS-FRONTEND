@@ -13,9 +13,7 @@ const compras_fetch = (() => {
             headers: {'Content-Type': 'application/json'}
         }).
         then((resp) => resp.json()).
-        then(
-            compras_functions.updateInfo
-        ).catch(compras_functions.logError);
+        then(compras_functions.putExito).catch(compras_functions.logError);
     };
 
     const _post = (url, data) => {
@@ -34,7 +32,7 @@ const compras_fetch = (() => {
             headers: {'Content-Type': 'application/json'}
         }).
         then((resp) => resp.json()).
-        then(compras_functions.updateInfo).catch(compras_functions.logError);
+        then(console.log).catch(compras_functions.logError);
     };
 
     return {

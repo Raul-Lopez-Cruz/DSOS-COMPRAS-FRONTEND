@@ -46,20 +46,20 @@
     <!-- CONTROL PANEL -->
     <div class="container-lg my-3 py-2 px-4" id="controlPanel">
         <div class="row">
-            <div class="col-md-4 col-12 my-1">
+            <div class="col-md-6 col-12 my-1">
                 <div class="card d-flex text-center fg-custom align-items-center justify-content-center pb-4">
-                    <div class="card-body">CONTROLES</div>
+                    <div class="card-body">COMPRAR</div>
                     <div class="d-flex align-items-center justify-content-center">
                         <button type="button" class="btn btn-p-azul" id="btnAgregar" data-bs-toggle="modal"
-                            data-bs-target="#modalAgregarProducto">Agregar</button>
-                        <button type="button" class="ms-3 btn btn-s-azul" id="btnTEST"> Actualizar </button>
+                            data-bs-target="#modalAgregarProducto"> Un modelo </button>
+                        <button type="button" class="ms-3 btn btn-s-azul" id="btnTEST"> Varios modelos </button>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4 col-6 my-1">
+            <div class="col-md-3 col-6 my-1">
                 <div class="card text-center fg-custom pb-4">
                     <div class="card-body">
-                        <d class="d-none d-sm-block">MODELOS DIFERENTES</d>
+                        <d class="d-none d-sm-block">MODELOS</d>
                         <d class="d-block d-sm-none">MODELOS</d>
                     </div>
                     <icon class="fs-3 d-inline"><i class="px-1 bi bi-columns-gap round-yellow"></i>
@@ -67,11 +67,11 @@
                     </icon>
                 </div>
             </div>
-            <div class="col-md-4 col-6 my-1">
+            <div class="col-md-3 col-6 my-1">
                 <div class="card text-center fg-custom pb-4">
                     <div class="card-body">
-                        <d class="d-none d-sm-block">NUMERO DE PRODUCTOS</d>
-                        <d class="d-block d-sm-none">PRODUCTOS</d>
+                        <d class="d-none d-sm-block">ZAPATOS</d>
+                        <d class="d-block d-sm-none">ZAPATOS</d>
                     </div>
                     <icon class="fs-3 d-inline"><i class="px-1 bi bi-box-seam round-green"></i>
                         <p class="fs-3 d-inline color-verde" id="contadorProductos">0</p>
@@ -80,23 +80,38 @@
             </div>
         </div>
     </div>
-    <!-- TABLE BODY -->
-    <div class="container-lg table-responsive text-nowrap fg-custom py-3">
-        <h5 class="">Tabla de productos</h5>
+    <!-- TABLA DE INVENTARIO -->
+    <div class="container-lg table-responsive text-nowrap fg-custom py-3" id="panelProductos">
+        <h5 class="">Inventario</h5>
         <input class="form-control form-control-sm input-custom2 my-3" type="text" id="searchBar"
             placeholder="Buscar producto (id, color, marca o modelo)">
         <table class="table">
             <thead class="table-custom-title">
                 <tr>
                     <th scope="col" class="align-middle">ID</th>
-                    <th scope="col" class="align-middle">Precio de <br> compra</th>
-                    <th scope="col" class="align-middle">Precio de <br> venta</th>
+                    <th scope="col" class="align-middle">Precio de venta</th>
                     <th scope="col" class="align-middle">Stock</th>
                     <th scope="col" class="align-middle">Talla</th>
                     <th scope="col" class="align-middle">Color</th>
                     <th scope="col" class="align-middle">Marca</th>
                     <th scope="col" class="align-middle">Modelo</th>
                     <th scope="col" class="align-middle text-center">Funciones</th>
+                </tr>
+            </thead>
+            <tbody id="tablaProductos" class="table-custom-body">
+            </tbody>
+        </table>
+    </div>
+    <!-- TABLA DE COMPRAS -->
+    <div class="container-lg table-responsive text-nowrap fg-custom py-3 d-none" id="panelCompras">
+        <h5 class="">Registro de compras</h5>
+        <table class="table">
+            <thead class="table-custom-title">
+                <tr>
+                    <th scope="col" class="align-middle">ID</th>
+                    <th scope="col" class="align-middle">Fecha</th>
+                    <th scope="col" class="align-middle">Total</th>
+                    <th scope="col" class="align-middle text-center">Ver detalles</th>
                 </tr>
             </thead>
             <tbody id="tablaCompras" class="table-custom-body">
@@ -122,7 +137,7 @@
                             <input type="number" class="form-control input-custom" id="create_input_pcompra"
                                 placeholder="Introduce el precio de compra" min="0" max="1000000" step="0.01" required>
                             <div class="invalid-tooltip" id="pcompra_invalid">
-                                Introduce un valor (positivo, con o sin decimales).
+                                Ingrese un valor (positivo, con o sin decimales).
                             </div>
                         </div>
                         <div class="mb-2 position-relative">
@@ -130,7 +145,7 @@
                             <input type="number" class="form-control input-custom" id="create_input_pventa" min="0"
                                 max="1000000" step="0.01" placeholder="Introduce el precio de venta" required>
                             <div class="invalid-tooltip" id="pventa_invalid">
-                                Introduce un valor (positivo, con o sin decimales).
+                                Ingrese un valor (positivo, con o sin decimales).
                             </div>
                         </div>
                         <div class="mb-2 position-relative">
@@ -138,36 +153,24 @@
                             <input type="number" class="form-control input-custom" id="create_input_stock" min="0"
                                 step="1" max="999999" placeholder="Introduce el stock del producto" required>
                             <div class="invalid-tooltip" id="stock_invalid">
-                                Debe ser un número entero mayor o igual a cero.
+                                Ingrese un valor entero mayor a cero.
                             </div>
                         </div>
                         <div class="mb-2 position-relative">
                             <label for="create_input_talla">Talla</label>
                             <select class="form-control input-custom" id="create_input_talla" required>
                                 <option selected hidden>Selecciona una talla...</option>
-                                <option>2</option>
-                                <option>2.5</option>
-                                <option>3</option>
-                                <option>3.5</option>
-                                <option>4</option>
-                                <option>4.5</option>
-                                <option>5</option>
-                                <option>5.5</option>
-                                <option>6</option>
-                                <option>6.5</option>
-                                <option>7</option>
-                                <option>7.5</option>
-                                <option>8</option>
-                                <option>8.5</option>
-                                <option>9</option>
-                                <option>9.5</option>
-                                <option>10</option>
-                                <option>10.5</option>
-                                <option>11</option>
-                                <option>11.5</option>
-                                <option>12</option>
-                                <option>12.5</option>
-                                <option>13</option>
+                                <option value="5">5</option>
+                                <option value="5.5">5.5</option>
+                                <option value="6">6</option>
+                                <option value="6.5">6.5</option>
+                                <option value="7">7</option>
+                                <option value="7.5">7.5</option>
+                                <option value="8">8</option>
+                                <option value="8.5">8.5</option>
+                                <option value="9">9</option>
+                                <option value="9.5">9.5</option>
+                                <option value="10">10</option>
                             </select>
                             <div class="invalid-tooltip" id="talla_invalid">
                                 Debe seleccionar una talla de la lista.
@@ -175,22 +178,30 @@
                         </div>
                         <div class="mb-2 position-relative">
                             <label for="create_input_color">Color</label>
-                            <input type="text" class="form-control input-custom" id="create_input_color"
-                                placeholder="Escribe el color o colores del producto" maxlength="20" required>
+                            <select class="form-control input-custom" id="create_input_color" required>
+                                <option selected hidden>Selecciona un color...</option>
+                                <option value="Amarillo">Amarillo</option>
+                                <option value="Azul">Azul</option>
+                                <option value="Blanco">Blanco</option>
+                                <option value="Naranja">Naranja</option>
+                                <option value="Negro">Negro</option>
+                                <option value="Rojo">Rojo</option>
+                                <option value="Rosa">Rosa</option>
+                                <option value="Verde">Verde</option>
+                                </select>
                             <div class="invalid-tooltip">
-                                Color o colores del producto.
+                                Selecciona un color válido.
                             </div>
                         </div>
                         <div class="mb-2 position-relative">
                             <label for="create_input_marca">Marca</label>
                             <select class="form-control input-custom" id="create_input_marca" required>
                                 <option selected hidden>Selecciona una marca...</option>
-                                <option>Puma</option>
-                                <option>Nike</option>
-                                <option>Adidas</option>
-                                <option>Reebok</option>
-                                <option>Converse</option>
-                                <option>Underarmour</option>
+                                <option value="Nike">Nike</option>
+                                <option value="Adidas">Adidas</option>
+                                <option value="Reebok">Reebok</option>
+                                <option value="Converse">Converse</option>
+                                <option value="UnderArmour">UnderArmour</option>
                             </select>
                             <div class="invalid-tooltip">
                                 Debe seleccionar una marca váilda.
@@ -207,7 +218,7 @@
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <small class="text-warning d-none" id="advertencia">Precaución: El precio de venta es menor al
+                        <small class="text-warning d-none" id="advertencia">Precaución: El precio de venta es igual o menor al
                             precio de compra.</small>
                         <button type="submit" id="create_ok" class="btn btn-s-verde">Guardar</button>
                         <button type="button" id="create_cancel" class="btn btn-s-amarillo"
@@ -258,21 +269,11 @@
                 </div>
                 <form id="edit_Form" class="was-validated">
                     <div class="modal-body">
-
                         <small class="text-muted">No se permite editar el ID</small>
-
                         <div class="form-floating mb-2">
-                            <input type="number" class="form-control input-custom" id="edit_input_id" disabled="true"
+                            <input type="text" class="form-control input-custom" id="edit_input_id" disabled="true"
                                 required>
                             <label for="nombreProducto">ID del producto</label>
-                        </div>
-                        <div class="mb-2 position-relative">
-                            <label for="edit_input_pcompra">Precio de compra</label>
-                            <input type="number" class="form-control input-custom" id="edit_input_pcompra"
-                                placeholder="Introduce el precio de compra" min="0" max="1000000" step="0.01" required>
-                            <div class="invalid-tooltip" id="pcompra_invalid">
-                                Introduce un valor (positivo, con o sin decimales).
-                            </div>
                         </div>
                         <div class="mb-2 position-relative">
                             <label for="edit_input_pventa">Precio de venta</label>
@@ -288,38 +289,6 @@
                                 step="1" max="999999" placeholder="Introduce el stock del producto" required>
                             <div class="invalid-tooltip" id="stock_invalid">
                                 Debe ser un número entero mayor o igual a cero.
-                            </div>
-                        </div>
-                        <div class="mb-2 position-relative">
-                            <label for="edit_input_talla">Talla</label>
-                            <input type="number" class="form-control input-custom" id="edit_input_talla"
-                                placeholder="Escribe el monto total de la compra" min="1" max="100" step="0.5" required>
-                            <div class="invalid-tooltip" id="talla_invalid">
-                                Introduce un valor (positivo, con o sin decimales).
-                            </div>
-                        </div>
-                        <div class="mb-2 position-relative">
-                            <label for="edit_input_color">Color</label>
-                            <input type="text" class="form-control input-custom" id="edit_input_color"
-                                placeholder="Escribe el color o colores del producto" maxlength="20" required>
-                            <div class="invalid-tooltip">
-                                Color o colores del producto.
-                            </div>
-                        </div>
-                        <div class="mb-2 position-relative">
-                            <label for="edit_input_marca">Marca</label>
-                            <input type="text" class="form-control input-custom" id="edit_input_marca"
-                                placeholder="Escribe la marca del producto" maxlength="20" required>
-                            <div class="invalid-tooltip">
-                                Marca del producto.
-                            </div>
-                        </div>
-                        <div class="position-relative">
-                            <label for="edit_input_modelo">Modelo</label>
-                            <input type="text" class="form-control input-custom" id="edit_input_modelo"
-                                placeholder="Escribe el modelo del producto" maxlength="20" required>
-                            <div class="invalid-tooltip">
-                                Modelo del producto.
                             </div>
                         </div>
                     </div>
