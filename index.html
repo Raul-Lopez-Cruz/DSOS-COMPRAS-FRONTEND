@@ -321,17 +321,17 @@
                 <form id="login_Form" class="needs-validation">
                     <div class="modal-body">
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="userid" placeholder="name@example.com">
+                            <input type="text" class="form-control" id="userid" placeholder="name@example.com" autocomplete="username">
                             <label for="userid">Nombre de usuario</label>
                         </div>
                         <div class="form-floating">
-                            <input type="password" class="form-control" id="password" placeholder="Password">
+                            <input type="password" class="form-control" id="password" placeholder="Password" autocomplete="current-password">
                             <label for="password">Contraseña</label>
                         </div>
                     </div>
                     <div class="modal-footer justify-content-center">
                         <button type="button" id="login" class="btn btn-p-azul">Ingresar</button>
-                        <button type="button" id="edit_cancel" class="btn btn-p-dark"
+                        <button type="button" id="login_cancel" class="btn btn-p-dark"
                             data-bs-dismiss="modal">Cancelar</button>
                     </div>
                 </form>
