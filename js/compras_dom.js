@@ -13,7 +13,8 @@ const compras_dom = (() => {
     const $btnReload = document.getElementById("btnTEST");
     const $createCancel = document.getElementById("create_cancel");
     const $searchBar = document.getElementById("searchBar");
-    
+    const $login = document.getElementById("login");
+    const $logout = document.getElementById("logout");    
     // --------------- LISTENERS ---------------
     $createOK.addEventListener("click",compras_functions.crearRegistro);
     $createCancel.addEventListener("click", compras_functions.reiniciaCampos);
@@ -26,13 +27,15 @@ const compras_dom = (() => {
     $edit_input_stock.addEventListener("keyup", compras_functions.validateIntegerNumber);
     $create_input_talla.addEventListener("change", compras_functions.validarTalla);
     $create_input_color.addEventListener("change", compras_functions.validarColor);
-    $btnReload.addEventListener("click", () => { location.reload() });
+    $btnReload.addEventListener("click", () => { console.log("This feature is not available yet...") });
     $searchBar.addEventListener("keyup", compras_functions.filtrarTabla);
     $create_input_marca.addEventListener("change", compras_functions.fillSelects);
     $create_input_marca.addEventListener("change", compras_functions.validarMarca);
     $create_input_modelo.addEventListener("change", compras_functions.validarModelo);
+    $login.addEventListener("click", compras_functions.iniciarSesion);
+    $logout.addEventListener("click", compras_auth.logout);
+
     // --------------- CALLS ---------------
     compras_fetch.get("https://compras-testing.herokuapp.com/api/compras/", compras_functions.cargarDatos, compras_functions.logError);
     compras_functions.reiniciaCampos();
-
 })();

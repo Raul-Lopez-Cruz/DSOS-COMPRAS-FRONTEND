@@ -60,7 +60,7 @@
     background-color: #343c4e;
     border: line;
     border-color: #717784;
-    color: #717784;
+    color: #adb7cc;
 }
 
 .btn-s-dark:hover{
@@ -68,6 +68,21 @@
     border: line;
     border-color: #69809a;
     color: #fff;
+}
+
+.btn-p-dark{
+    background-color: #343f58;
+    border: line;
+    border-color: #858c9c;
+    color: #a5adc2;
+}
+
+.btn-p-dark:hover{
+    background-color: #69809a;
+    border: line;
+    border-color: #69809a;
+    color: #fff;
+    box-shadow: 0 0 .25rem #69809a;
 }
 
 .nav-custom{
@@ -83,22 +98,24 @@
 
 .btn-s-azul{
     background-color: #30405f;
-    border-color: #30405f;
+    border-color: #5a8dee;
     color: #5a8dee;
+    border-style: solid;
+    border-width: 1px;
 }
 
 .btn-p-azul{
-    background-color: #5a8dee;
-    border-color: #5a8dee;
+    background-color: #467bdf;
+    border-color: #467bdf;
     color: #ffffff;
     box-shadow: 0 .125rem .25rem rgba(0,0,0,.2);
 }
 
 .btn-p-azul:hover {
-    background-color: #76a6ff;
-    border-color: #76a6ff;
+    background-color: #5a8dee;
+    border-color: #5a8dee;
     color: #ffffff;
-    box-shadow: 0 0 .25rem #76a6ff;
+    box-shadow: 0 0 .25rem #ffffff;
 }
 
 .btn-s-azul:hover {
@@ -133,6 +150,12 @@
     background-color: #283144;
     color: #d8deea;
     border-radius: 15px;
+}
+
+.fg-custom-1{
+    background-color: #283144;
+    color: #d8deea;
+    border-radius: 0 15px 15px 15px;
 }
 
 .bg-custom{
@@ -203,3 +226,59 @@ tbody tr:hover th{
     background-color: #283144;
     color: #cbd5e7;
 }
+/*--bs-nav-tabs-link-active-bg*/
+.nav-tabs {
+    border-bottom: #283144 solid 1px;
+}
+
+.nav-tabs .nav-link.active, .nav-tabs .nav-item.show .nav-link {
+    background-color: #283144;
+    color: #ffffff;
+    border: #283144 solid 1px;
+}
+
+/* --bs-nav-tabs-link-active-bg */
+.nav-link.active, .nav-link.active:focus {
+    background-color: #283144;
+    border-color: #283144;
+    color: #ffffff;
+    /*font shadow*/
+}
+
+/* ONLY and only for .nav-link and .active at the same time*/
+
+.nav-link.active:hover {
+    background-color: #2f3950;
+    border-color: #2f3950;
+    color: #ffffff;
+}
+
+/* .nav-tabs .nav-link */
+.nav-tabs .nav-link {
+    background-color: #20283a;
+    color: #a8a8a8;
+    border: #20283a solid 1px;
+}
+
+/* ONLY for .nav-link which are not .active*/
+.nav-tabs:hover .nav-link:hover {
+    background-color: #283144;
+    color: #ffffff;
+    border: #283144 solid 1px;
+    box-shadow: 0 0 .25rem #4f77ce;
+}
+
+.form-floating input.form-control {
+    background-color: #283144;
+    color: #ffffff;
+    border: #ffffff solid 1px;
+    box-shadow: 0 0 .25rem #4f77ce;
+}
+
+.form-floating input.form-control:focus {
+    background-color: #283144;
+    color: #ffffff;
+    border: #ffffff solid 1px;
+    box-shadow: 0 0 .5rem rgb(208, 227, 252);
+}
+

@@ -400,6 +400,17 @@ const compras_functions = (() => {
     const _logError = (response) => {
         console.log("Algo salió mal...",response);
     };
+
+    const _iniciarSesion = () => {
+        const usuario = document.getElementById("userid").value;
+        const contraseña = document.getElementById("password").value;
+        data = {
+            usernameOrEmail: usuario,
+            password: contraseña
+        };
+        compras_auth.login(data);
+    }
+
     return {
         validateFloatNumber: _validateFloatNumber,
         validateIntegerNumber: _validateIntegerNumber,        
@@ -419,5 +430,6 @@ const compras_functions = (() => {
         validarMarca: _validarMarca,
         validarModelo: _validarModelo,
         validarColor: _validarColor,
+        iniciarSesion: _iniciarSesion,
     }
 })();
