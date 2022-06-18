@@ -282,3 +282,17 @@ tbody tr:hover th{
     box-shadow: 0 0 .5rem rgb(208, 227, 252);
 }
 
+/* .form-floating input.form-control when class is-invalid*/
+.form-floating input.form-control.is-invalid {
+    background-color: #283144;
+    color: #ffffff;
+    border: #e4260d solid 1px;
+}
+
+.form-floating input.form-control.is-invalid:hover {
+    background-color: #283144;
+    color: #ffffff;
+    border: #e22727 solid 1px;
+    box-shadow: 0 0 .5rem rgb(223, 109, 94);
+}
+

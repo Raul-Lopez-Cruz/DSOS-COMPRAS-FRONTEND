@@ -38,8 +38,15 @@ function _getJWTFromServer(data) {
             $("#registrarse").addClass("d-none");
             $("#logout").removeClass("d-none");
             $("#modalLogin").modal("hide");
+            //userid and password remove class is-invalid and add class is-valid
+            $("#userid").removeClass("is-invalid");
+            $("#password").removeClass("is-invalid");
         } else if (xhr.readyState == 4 && xhr.status != 200) {
-            console.log("Error", xhr.responseText);
+            console.log("El usuario y/o contraseña son incorrectos.");
+            //userid and password add class is-invalid to show red border
+            $("#userid").addClass("is-invalid");
+            $("#password").addClass("is-invalid");
+
         }
     }
     xhr.send(JSON.stringify(data));
@@ -53,7 +60,7 @@ function _logout() {
         $("#ingresar").removeClass("d-none");
         $("#registrarse").removeClass("d-none");
         $("#logout").addClass("d-none");
-        console.log("Sesión terminada.");
+        console.log("Has cerrado sesión.");
     }
 }
 
