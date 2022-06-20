@@ -1,13 +1,77 @@
 const compras_functions = (() => {
-    
-    //Funciones públicas (constantes)
 
-    //Funciones privadas (funciones)
-    
-    const _createRow = (id, precioCompra, precioVenta, stock, talla, color, marca, modelo) => {
+    const EDITAR = 1;
+    const BORRAR = 0;
+    const DETALLES = 2;
+
+    const _createCompraRow = (id, total, fecha) => {
         const $row = document.createElement("tr");
         const $celda_id = document.createElement("th"); $celda_id.scope = "row"; $celda_id.classList.add("columnaID");
-        //const $celda_pcompra = document.createElement("td");
+        const $celda_fecha = document.createElement("td"); $celda_fecha.classList.add("columnaFecha");
+        const $celda_total = document.createElement("td"); $celda_total.classList.add("columnaTotal");
+        const $celda_acciones = document.createElement("td"); $celda_acciones.classList.add("text-center");
+        const $btn_detalles = _createButton(DETALLES);
+
+        $celda_id.innerText = id;
+        $celda_fecha.innerText = fecha;
+        $celda_total.innerText = toMoneyFormat(total);
+
+        $celda_acciones.appendChild($btn_detalles);
+
+        $row.appendChild($celda_id);
+        $row.appendChild($celda_fecha);
+        $row.appendChild($celda_total);
+        $row.appendChild($celda_acciones);
+
+        document.getElementById("tablaCompras-body").appendChild($row);
+    }
+
+    const _createCarritoRow = (precioCompra, precioVenta, stock, talla, color, idMarca, marca, idModelo, modelo) => {
+        const $row = document.createElement("tr");
+        const $celda_id = document.createElement("th"); $celda_id.scope = "row"; $celda_id.classList.add("columnaID");
+        const $celda_pventa = document.createElement("td"); $celda_pventa.classList.add("columnaPVenta");
+        const $celda_pcompra = document.createElement("td"); $celda_pcompra.classList.add("columnaPCompra");
+        const $celda_stock = document.createElement("td"); $celda_stock.classList.add("columnaStock");
+        const $celda_talla = document.createElement("td"); $celda_talla.classList.add("columnaTalla");
+        const $celda_color = document.createElement("td"); $celda_color.classList.add("columnaColor");
+        const $celda_idmarca = document.createElement("td"); $celda_idmarca.style.display = "none";
+        const $celda_marca = document.createElement("td"); $celda_marca.classList.add("columnaMarca");
+        const $celda_idmodelo = document.createElement("td"); $celda_idmodelo.style.display = "none";
+        const $celda_modelo = document.createElement("td"); $celda_modelo.classList.add("columnaModelo");
+        const $celda_acciones = document.createElement("td"); $celda_acciones.classList.add("text-center");
+        const $btn_borrar = _createButton(BORRAR);
+
+        $celda_pcompra.innerText = toMoneyFormat(precioCompra);
+        $celda_pventa.innerText = toMoneyFormat(precioVenta);
+        $celda_stock.innerText = stock;
+        $celda_talla.innerText = talla;
+        $celda_color.innerText = color;
+        $celda_idmarca.innerText = idMarca;
+        $celda_marca.innerText = marca;
+        $celda_idmodelo.innerText = idModelo;
+        $celda_modelo.innerText = modelo;
+
+        $celda_acciones.appendChild($btn_borrar);
+
+        $row.appendChild($celda_pcompra);
+        $row.appendChild($celda_pventa);
+        $row.appendChild($celda_stock);
+        $row.appendChild($celda_talla);
+        $row.appendChild($celda_color);
+        $row.appendChild($celda_idmarca);
+        $row.appendChild($celda_marca);
+        $row.appendChild($celda_idmodelo);
+        $row.appendChild($celda_modelo);
+        $row.appendChild($celda_acciones);
+
+        document.getElementById("tablaCarrito-body").appendChild($row);
+        let totalActual = parseFloat(document.getElementById("totalCarrito").innerText.replace(/[^0-9.]/g, ""));
+        document.getElementById("totalCarrito").innerText = "Total: " + toMoneyFormat(totalActual + (precioCompra * stock));
+    };
+
+    const _createProductoRow = (id, precioCompra, precioVenta, stock, talla, color, marca, modelo) => {
+        const $row = document.createElement("tr");
+        const $celda_id = document.createElement("th"); $celda_id.scope = "row"; $celda_id.classList.add("columnaID");
         const $celda_pventa = document.createElement("td"); $celda_pventa.classList.add("columnaPVenta");
         const $celda_stock = document.createElement("td"); $celda_stock.classList.add("columnaStock");
         const $celda_talla = document.createElement("td"); $celda_talla.classList.add("columnaTalla");
@@ -15,11 +79,10 @@ const compras_functions = (() => {
         const $celda_marca = document.createElement("td"); $celda_marca.classList.add("columnaMarca");
         const $celda_modelo = document.createElement("td"); $celda_modelo.classList.add("columnaModelo");
         const $celda_acciones = document.createElement("td"); $celda_acciones.classList.add("text-center");
-        const $btn_editar = _createButton("editar");
-        const $btn_borrar = _createButton("borrar");
+        const $btn_editar = _createButton(EDITAR);
+        const $btn_borrar = _createButton(BORRAR);
 
-        $celda_id.innerText = _intToFixedLength(id,4);
-        //$celda_pcompra.innerText = '$'+precioCompra;
+        $celda_id.innerText = _intToFixedLength(id, 4);
         $celda_pventa.innerText = toMoneyFormat(precioVenta);
         $celda_stock.innerText = stock;
         $celda_talla.innerText = talla;
@@ -31,7 +94,6 @@ const compras_functions = (() => {
         $celda_acciones.appendChild($btn_borrar);
 
         $row.appendChild($celda_id);
-        //$row.appendChild($celda_pcompra);
         $row.appendChild($celda_pventa);
         $row.appendChild($celda_stock);
         $row.appendChild($celda_talla);
@@ -40,44 +102,44 @@ const compras_functions = (() => {
         $row.appendChild($celda_modelo);
         $row.appendChild($celda_acciones);
 
-        document.getElementById("tablaProductos").appendChild($row);
+        document.getElementById("tablaProductos-body").appendChild($row);
 
         updateAfterCreate(stock);
     };
 
     const updateAfterCreate = (stock) => {
-        contadorModelos=document.getElementById("contadorModelos");
-        contadorProductos=document.getElementById("contadorProductos");
+        contadorModelos = document.getElementById("contadorModelos");
+        contadorProductos = document.getElementById("contadorProductos");
         const numModelos = parseInt(contadorModelos.innerText);
-        const numProductos = parseInt(contadorProductos.innerText.replace(',',''));
-        contadorModelos.innerText = numModelos+1;
-        contadorProductos.innerText = numProductos+stock;
+        const numProductos = parseInt(contadorProductos.innerText.replace(',', ''));
+        contadorModelos.innerText = numModelos + 1;
+        contadorProductos.innerText = numProductos + stock;
     }
 
     const updateAfterDelete = (stock) => {
-        contadorModelos=document.getElementById("contadorModelos");
-        contadorProductos=document.getElementById("contadorProductos");
+        contadorModelos = document.getElementById("contadorModelos");
+        contadorProductos = document.getElementById("contadorProductos");
         const numModelos = parseInt(contadorModelos.innerText);
-        const numProductos = parseInt(contadorProductos.innerText.replace(',',''));
-        contadorModelos.innerText = numModelos-1;
-        contadorProductos.innerText = numProductos-stock;
+        const numProductos = parseInt(contadorProductos.innerText.replace(',', ''));
+        contadorModelos.innerText = numModelos - 1;
+        contadorProductos.innerText = numProductos - stock;
     }
 
-    const updateAfterUpdate = (oldStock,newStock) => {
-        contadorProductos=document.getElementById("contadorProductos");
-        const numProductos = parseInt(contadorProductos.innerText.replace(',',''));
-        contadorProductos.innerText = numProductos+(newStock-oldStock);
+    const updateAfterUpdate = (oldStock, newStock) => {
+        contadorProductos = document.getElementById("contadorProductos");
+        const numProductos = parseInt(contadorProductos.innerText.replace(',', ''));
+        contadorProductos.innerText = numProductos + (newStock - oldStock);
     }
 
-    const _createButton = (texto) => {
+    const _createButton = (opcion) => {
         const $button = document.createElement("button");
         const $icon = document.createElement("i");
         $button.appendChild($icon);
         var $cell;
 
-        if (texto == "borrar") {
-            $button.className = "btn btn-s-rojo mx-1";
-            $icon.className = "bi bi-trash";
+        if (opcion == 0) {
+            $button.className = "btn btn-label-danger mx-1";
+            $icon.className = "fa-solid fa-trash-can";
             $button.addEventListener("click", (event) => {
                 if ($(event.target).is("i"))
                     $cell = event.target.parentElement.parentElement;
@@ -89,25 +151,25 @@ const compras_functions = (() => {
                 aux.parentNode.replaceChild(aux.cloneNode(1), aux);
                 aux = document.getElementById("delete_ok");
                 aux.addEventListener("click", () => {
-                    compras_fetch.delete("https://compras-testing.herokuapp.com/api/compras/"+id);
+                    compras_fetch.delete("https://compras-testing.herokuapp.com/api/compras/" + id);
                     $row.parentNode.removeChild($row);
                     updateAfterDelete($row.querySelector('.columnaStock').innerText);
                     $('#modalConfirmarEliminar').modal('hide');
                 });
                 $('#modalConfirmarEliminar').modal('show');
             });
-        } else if (texto == "editar"){
-            $button.className = "btn btn-s-amarillo mx-1";
-            $icon.className = "bi bi-pencil-square";
+        } else if (opcion == 1) {
+            $button.className = "btn btn-label-warning mx-1";
+            $icon.className = "fa-solid fa-pen-to-square";
             $button.addEventListener("click", (event) => {
                 if ($(event.target).is("i"))
                     $cell = event.target.parentElement.parentElement;
                 else
                     $cell = event.target.parentElement;
                 var $row = $cell.parentElement;
-                var temp_id =      $row.querySelector('.columnaID').innerText;
-                var temp_pventa =  $row.querySelector('.columnaPVenta').innerText.replace('$ ','').replace(',','');
-                var temp_stock =   $row.querySelector('.columnaStock').innerText;
+                var temp_id = $row.querySelector('.columnaID').innerText;
+                var temp_pventa = $row.querySelector('.columnaPVenta').innerText.replace('$ ', '').replace(',', '');
+                var temp_stock = $row.querySelector('.columnaStock').innerText;
                 document.getElementById("edit_input_id").value = temp_id;
                 document.getElementById("edit_input_pventa").value = temp_pventa;
                 document.getElementById("edit_input_stock").value = temp_stock;
@@ -116,19 +178,19 @@ const compras_functions = (() => {
                 aux = document.getElementById("edit_ok");
                 aux.addEventListener("click", () => {
                     var todoOK = document.getElementById("edit_Form").checkValidity();
-                    if(todoOK){
+                    if (todoOK) {
                         data = {
                             idProducto: parseInt(temp_id),
                             precioVenta: parseFloat(document.getElementById("edit_input_pventa").value),
                             stock: parseInt(document.getElementById("edit_input_stock").value)
                         };
-                        compras_fetch.put("https://compras-testing.herokuapp.com/api/compras/"+temp_id, data);
+                        compras_fetch.put("https://compras-testing.herokuapp.com/api/compras/" + temp_id, data);
                         $('#modalEditarProducto').modal('hide');
                     }
                 });
                 $('#modalEditarProducto').modal('show');
             });
-        }else{
+        } else {
             $button.className = "btn btn-s-azul mx-1";
             $icon.className = "bi bi-eye";
         }
@@ -137,29 +199,29 @@ const compras_functions = (() => {
     }
 
     //Transforma un entero en un String de determinado tamaño con ceros a la izquierda
-    const _intToFixedLength = (int,len) =>{
-        if(int.toString().length >= len){
-            return String (int);
-        }else{
-            res = '0'.repeat(len-int.toString().length);
-            return String (res.toString()+int.toString());
+    const _intToFixedLength = (int, len) => {
+        if (int.toString().length >= len) {
+            return String(int);
+        } else {
+            res = '0'.repeat(len - int.toString().length);
+            return String(res.toString() + int.toString());
         }
     }
 
     //Función que toma un valor integer o float y lo transforma en un String con el formato de moneda
-    function toMoneyFormat(value){
-        return '$ '+value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+    function toMoneyFormat(value) {
+        return '$ ' + parseFloat(value).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
     }
 
     //Función que vacía el contenido de los campos del formulario de crear producto
-    const _reiniciaCampos = ()=> {
+    const _reiniciaCampos = () => {
         document.getElementById("create_input_pcompra").value = "";
         document.getElementById("create_input_pventa").value = "";
         document.getElementById("create_input_stock").value = "";
-        document.getElementById("create_input_talla").value = "Selecciona una talla...";
-        document.getElementById("create_input_color").value = "Selecciona un color...";
-        document.getElementById("create_input_marca").value = "Selecciona una marca...";
-        document.getElementById("create_input_modelo").value = "Primero selecciona una marca.";
+        document.getElementById("create_input_talla").value = "Seleccione una talla...";
+        document.getElementById("create_input_color").value = "Seleccione un color...";
+        document.getElementById("create_input_marca").value = "Seleccione una marca...";
+        document.getElementById("create_input_modelo").value = "Primero seleccione una marca.";
         document.getElementById("create_input_talla").dispatchEvent(new Event('change'));
         document.getElementById("create_input_color").dispatchEvent(new Event('change'));
         document.getElementById("create_input_marca").dispatchEvent(new Event('change'));
@@ -201,39 +263,12 @@ const compras_functions = (() => {
         if (isNaN(pventa) || isNaN(pcompra)) {
             return;
         }
-        if  (pventa > pcompra) {
+        if (pventa > pcompra) {
             document.getElementById("advertencia").classList.remove("d-block");
             document.getElementById("advertencia").classList.add("d-none");
         } else {
             document.getElementById("advertencia").classList.remove("d-none");
             document.getElementById("advertencia").classList.add("d-block");
-        }
-    };
-    
-    const _fillSelects = ()=>{
-        //fill selector create_input_modelo with data depending on the selected value in create_input_marca
-        const marca = document.getElementById("create_input_marca").value;
-        const modelo = document.getElementById("create_input_modelo");
-        if(marca === "" || marca === "Selecciona una marca..."){
-            modelo.innerHTML = "<option value=''>Primero selecciona una marca.</option>";
-        }//if adidas is selected, then the options in modelo will be: Duramo SL, Ultraboost, Racer TR21 and Adizero Boston.
-        else if(marca === "Adidas"){
-            modelo.innerHTML = "<option value='' hidden>Selecciona un modelo...</option><option value='Duramo SL'>Duramo SL</option><option value='Ultraboost'>Ultraboost</option><option value='Racer TR21'>Racer TR21</option><option value='Adizero Boston'>Adizero Boston</option><option value='ASWEEMOVE'>ASWEEMOVE</option>";
-        }//if nike is selected, then the options in modelo will be: Revolution 6, Jordan Essentials, Dri-FIT, LeBron 19, and Air Max 1.
-        else if(marca === "Nike"){
-            modelo.innerHTML = "<option value='' hidden>Selecciona un modelo...</option><option value='Revolution 6'>Revolution 6</option><option value='Jordan Essentials'>Jordan Essentials</option><option value='Dri-FIT'>Dri-FIT</option><option value='LeBron 19'>LeBron 19</option><option value='Air Max 1'>Air Max 1</option>";
-        }//if underarmour is selected, then the options in modelo will be: UA Hovr, UA Charged, UA Surge, UA Mojo, UA Flow and UA Valsetz.
-        else if(marca === "UnderArmour"){
-            modelo.innerHTML = "<option value='' hidden>Selecciona un modelo...</option><option value='UA Hovr'>UA Hovr</option><option value='UA Charged'>UA Charged</option><option value='UA Surge'>UA Surge</option><option value='UA Mojo'>UA Mojo</option><option value='UA Flow'>UA Flow</option><option value='UA Valsetz'>UA Valsetz</option>";
-        }//if Reebok is selected, then the options in modelo will be: Resonator Mid, Royal Techque, Turbo Restyle, Leather Pj, Nanoflex TR, Nano X2.
-        else if(marca === "Reebok"){
-            modelo.innerHTML = "<option value='' hidden>Selecciona un modelo...</option><option value='Resonator Mid'>Resonator Mid</option><option value='Royal Techque'>Royal Techque</option><option value='Turbo Restyle'>Turbo Restyle</option><option value='Leather Pj'>Leather Pj</option><option value='Nanoflex TR'>Nanoflex TR</option><option value='Nano X2'>Nano X2</option>";
-        }//if Converse is selected, then the options in modelo will be: All Star, GLF 2.0, Chuck Taylor, Aeon Active Cx, Stüssy Chuck and Weapon Cx.
-        else if(marca === "Converse"){
-            modelo.innerHTML = "<option value='' hidden>Selecciona un modelo...</option><option value='All Star'>All Star</option><option value='GLF 2.0'>GLF 2.0</option><option value='Chuck Taylor'>Chuck Taylor</option><option value='Aeon Active Cx'>Aeon Active Cx</option><option value='Stüssy Chuck'>Stüssy Chuck</option><option value='Weapon Cx'>Weapon Cx</option>";
-        }
-        else{
-            modelo.innerHTML = "<option value='' hidden>Selecciona un modelo...</option>";
         }
     };
 
@@ -253,7 +288,7 @@ const compras_functions = (() => {
         const input = event.target;
         const value = input.value;
         const invalid_tooltip = input.nextElementSibling;
-        if (value === 'Selecciona una marca...') {
+        if (value === 'Seleccione una marca...') {
             input.setCustomValidity('Debe seleccionar una marca');
             invalid_tooltip.innerText = 'Debe seleccionar una marca';
         } else {
@@ -265,7 +300,7 @@ const compras_functions = (() => {
         const input = event.target;
         const value = input.value;
         const invalid_tooltip = input.nextElementSibling;
-        if (value === '' || value === 'Selecciona un color...') {
+        if (value === '' || value === 'Seleccione un color...') {
             input.setCustomValidity('Debe seleccionar un color');
             invalid_tooltip.innerText = 'Debe seleccionar un color';
         } else {
@@ -277,7 +312,7 @@ const compras_functions = (() => {
         const input = event.target;
         const value = input.value;
         const invalid_tooltip = input.nextElementSibling;
-        if (value === 'Selecciona un modelo...' || value === 'Primero selecciona una marca.') {
+        if (value == 'Seleccione un modelo...' || value == 'Primero seleccione una marca.') {
             input.setCustomValidity('Debe seleccionar un modelo');
             invalid_tooltip.innerText = 'Debe seleccionar un modelo';
         } else {
@@ -285,44 +320,34 @@ const compras_functions = (() => {
         }
     }
 
-    const _crearRegistro = (target) => {
-        target.preventDefault();        
+    const _crearProductoEnCarrito = (target) => {
+        target.preventDefault();
         form = document.getElementById("create_Form");
         form.classList.add("was-validated");
         var todoOK = form.checkValidity();
         if (todoOK) {
-            const pcompra = document.getElementById("create_input_pcompra").value;
-            const pventa = document.getElementById("create_input_pventa").value;
-            const stock = document.getElementById("create_input_stock").value;
+            const precioCompra = parseFloat(document.getElementById("create_input_pcompra").value);
+            const precioVenta = parseFloat(document.getElementById("create_input_pventa").value);
+            const stock = parseInt(document.getElementById("create_input_stock").value);
             const talla = document.getElementById("create_input_talla").value;
             const color = document.getElementById("create_input_color").value;
-            const marca = document.getElementById("create_input_marca").value;
-            const modelo = document.getElementById("create_input_modelo").value;
-            data = {
-                precioCompra: pcompra,
-                precioVenta: pventa,
-                talla: talla,
-                stock: stock,
-                color: color,
-                marca: marca,
-                modelo: modelo
-            };
-            compras_fetch.post("https://compras-testing.herokuapp.com/api/compras/", data, _postExito, _logError);
+            const idMarca = document.getElementById("create_input_marca").value;
+            const marca = document.getElementById("create_input_marca").options[document.getElementById("create_input_marca").selectedIndex].text;
+            const idModelo = document.getElementById("create_input_modelo").value;
+            const modelo = document.getElementById("create_input_modelo").options[document.getElementById("create_input_modelo").selectedIndex].text;
+            _createCarritoRow(precioCompra, precioVenta, stock, talla, color, idMarca, marca, idModelo, modelo);
+
             $('#modalAgregarProducto').modal('hide');
             form.classList.remove("was-validated");
             _reiniciaCampos();
         }
-    };
-
-    function recargarDatos() {
-        compras_fetch.get("https://compras-testing.herokuapp.com/api/compras/", _cargarDatos, _logError);
     }
 
-    const _cargarDatos = (response) => {
-        response.data = response.data.sort(function(a, b) {
-            return a.idProducto - b.idProducto;
-        });
-        var sumaTotal=0;
+    const _cargarProductos = (response) => {
+        console.log(response.data);
+        const tbody = document.getElementById("tablaProductos-body");
+        tbody.innerHTML = "";
+        var sumaTotal = 0;
         for (let index = 0; index < response.data.length; index++) {
             const idProducto = response.data[index].idProducto;
             const precioCompra = response.data[index].precioCompra;
@@ -330,21 +355,77 @@ const compras_functions = (() => {
             const stock = response.data[index].stock;
             const talla = response.data[index].talla;
             const color = response.data[index].color;
-            const marca = response.data[index].marca;
-            const modelo = response.data[index].modelo;
-            sumaTotal = sumaTotal + response.data[index].stock; 
-            _createRow(idProducto, precioCompra, precioVenta, stock, talla, color, marca, modelo);
+            const marca = response.data[index].marca.nombreMarca;
+            const modelo = response.data[index].modelo.nombreModelo;
+            sumaTotal = sumaTotal + response.data[index].stock;
+            _createProductoRow(idProducto, precioCompra, precioVenta, stock, talla, color, marca, modelo);
         }
         document.getElementById("contadorModelos").innerText = response.data.length;
         document.getElementById("contadorProductos").innerText = sumaTotal;
         console.log("Contenido cargado correctamente.");
     };
 
+    const _cargarCompras = (response) => {
+        console.log(response.data);
+        const tbody = document.getElementById("tablaCompras-body");
+        tbody.innerHTML = "";
+        for (
+            let index = 0; index < response.data.length; index++) {
+            const idCompra = response.data[index].idCompra;
+            const total = response.data[index].total;
+            const fechaAdquirido = response.data[index].fechaAdquirido;
+            _createCompraRow(idCompra, total, fechaAdquirido);
+        }
+        console.log("Contenido cargado correctamente.");
+    };
+
+    const _cargarMarcas = (response) => {
+        //response has an array of {"idMarca":1,"nombreMarca":"Converse"} objects
+        marcas = response.data;
+        //fill selector create_input_marca with value = idMarca and text = nombreMarca
+        var select = document.getElementById("create_input_marca");
+        for (let index = 0; index < marcas.length; index++) {
+            const option = document.createElement("option");
+            option.value = marcas[index].idMarca;
+            option.text = marcas[index].nombreMarca;
+            select.add(option);
+        }
+    }
+
+    const _cargarModelos = (response) => {
+        //response has an array of {"idModelo":20,"nombreModelo":"171571C","marca":{"idMarca":1,"nombreMarca":"Converse"} objects
+        modelos = response.data;
+        //modelos[index].idModelo is the value of the option
+        //modelos[index].nombreModelo is the text of the option
+        const marcaSelect = document.getElementById("create_input_marca");
+        //add event listener to the select with arrow fucnt
+        marcaSelect.addEventListener("change", (event) => {
+            const marca = event.target.value;
+            const modeloSelect = document.getElementById("create_input_modelo");
+            modeloSelect.innerHTML = "";
+            const option = document.createElement("option");
+            option.value = "Seleccione un modelo...";
+            option.text = "Seleccione un modelo...";
+            option.style.display = "none";
+            modeloSelect.add(option);
+            for (let index = 0; index < modelos.length; index++) {
+                if (modelos[index].marca.idMarca == marca) {
+                    const option = document.createElement("option");
+                    option.value = modelos[index].idModelo;
+                    option.text = modelos[index].nombreModelo;
+                    modeloSelect.add(option);
+                }
+            }
+
+        } //end of event listener
+        );
+    }
+
     const _filtrarTabla = () => {
         var input, filter, table, tr, td, i;
         input = document.getElementById("searchBar");
         filter = input.value.toUpperCase();
-        table = document.getElementById("tablaProductos");
+        table = document.getElementById("tablaProductos-body");
         tr = table.getElementsByTagName("tr");
         for (i = 0; i < tr.length; i++) {
             tr[i].style.display = "none";
@@ -362,22 +443,18 @@ const compras_functions = (() => {
         }
     }
     /*Función que actualiza los datos de la tabla después de un POST, sin hacer una petición GET*/
-    const _postExito = (response) => {
-        const idProducto = response.data.idProducto;
-        const precioCompra = response.data.precioCompra;
-        const precioVenta = response.data.precioVenta;
-        const stock = response.data.stock;
-        const talla = response.data.talla;
-        const color = response.data.color;
-        const marca = response.data.marca;
-        const modelo = response.data.modelo;
-        _createRow(idProducto, precioCompra, precioVenta, stock, talla, color, marca, modelo);
-        console.log(response);
+    const _updateTables = (response) => {
+        document.getElementById("btnUpdate").disabled = true;
+        console.log("Contenido actualizado. ",response);
+        compras_fetch.get("https://compras-develop.herokuapp.com/api/v1/productos/", _cargarProductos, _logError);
+        compras_fetch.get("https://compras-develop.herokuapp.com/api/v1/compras/", _cargarCompras, _logError);
+        document.getElementById("btnUpdate").disabled = false;
+        document.getElementById("btnUpdate").blur();
     };
-    
+
     /*Función que actualiza los datos de la tabla después de un PUT, sin hacer una petición GET*/
     const _putExito = (response) => {
-        var table = document.getElementById("tablaProductos");
+        var table = document.getElementById("tablaProductos-body");
         var row = table.getElementsByTagName("tr");
         var oldStock;
         for (let index = 0; index < row.length; index++) {
@@ -390,7 +467,7 @@ const compras_functions = (() => {
                 row[index].childNodes[4].innerText = response.data.color;
                 row[index].childNodes[5].innerText = response.data.marca;
                 row[index].childNodes[6].innerText = response.data.modelo;
-                
+
             }
         }
         updateAfterUpdate(oldStock, response.data.stock);
@@ -398,7 +475,7 @@ const compras_functions = (() => {
     }
 
     const _logError = (response) => {
-        console.log("Algo salió mal...",response);
+        console.log("Algo salió mal...", response);
     };
 
     const _iniciarSesion = () => {
@@ -411,25 +488,128 @@ const compras_functions = (() => {
         compras_auth.login(data);
     }
 
+    const _showPanelCompras = () => {
+        $("#panelProductos").slideUp(function () {
+            $("#panelCompras").slideDown();
+        });
+        $("#tabCompras").addClass("active");
+        $("#tabProductos").removeClass("active");
+    }
+    const _showPanelProductos = () => {
+        $("#panelCompras").slideUp(function () {
+            $("#panelProductos").slideDown();
+        });
+        $("#tabCompras").removeClass("active");
+        $("#tabProductos").addClass("active");
+    }
+
+    const _showCarrito = (event) => {
+        event.target.blur();
+        $("#controlPanel").fadeOut(function () {
+            $("#panelCarrito").fadeIn();
+        });
+    }
+
+    const _borrarCarrito = () => {
+        var table = document.getElementById("tablaCarrito-body");
+        var row = table.getElementsByTagName("tr");
+        for (let index = 0; index < row.length; index++) {
+            table.removeChild(row[index]);
+        }
+        document.getElementById("totalCarrito").innerText = "Total: $0.00";
+        $("#panelCarrito").fadeOut(function () {
+            $("#controlPanel").fadeIn();
+        });
+    };
+
+    const _loadPage = () => {
+        //TODO: Cargar datos de la base de datos, tanto para el panel de productos como para el panel de compras.
+        compras_fetch.get("https://compras-develop.herokuapp.com/api/v1/productos/", _cargarProductos, _logError);
+        compras_fetch.get("https://compras-develop.herokuapp.com/api/v1/compras/", _cargarCompras, _logError);
+        compras_fetch.get("https://compras-develop.herokuapp.com/api/v1/marcas/", _cargarMarcas, _logError);
+        compras_fetch.get("https://compras-develop.herokuapp.com/api/v1/modelos/", _cargarModelos, _logError);
+        $(document).ready(function () {
+            $('#tablaCompras').DataTable({
+                language: {
+                    url: 'utils/es-ES.json'
+                },
+                ordering: false,
+                "pageLength": 10,
+                "lengthChange": false,
+                "searching": false,
+                "pagingType": "simple",
+                "autoWidth": true,
+            });
+            $('#tablaProductos').DataTable({
+                language: {
+                    url: 'utils/es-ES.json'
+                },
+                ordering: false,
+                "pageLength": 10,
+                "lengthChange": false,
+                "searching": false,
+                "pagingType": "simple",
+                "autoWidth": true,
+            });
+        });
+    }
+
+    const _confirmarCompra = () => {
+        var table = document.getElementById("tablaCarrito-body");
+        var row = table.getElementsByTagName("tr");
+        var data = [];
+        for (let index = 0; index < row.length; index++) {
+            const precioCompra = row[index].childNodes[0].innerText.replace(/\$|\s/g, '');
+            const precioVenta = row[index].childNodes[1].innerText.replace(/\$|\s/g, '');
+            const stock = row[index].childNodes[2].innerText;
+            const talla = row[index].childNodes[3].innerText;
+            const color = row[index].childNodes[4].innerText;
+            const idMarca = row[index].childNodes[5].innerText;
+            const marca = row[index].childNodes[6].innerText;
+            const idModelo = row[index].childNodes[7].innerText;
+            const modelo = row[index].childNodes[8].innerText;
+            data.push({
+                precioCompra: precioCompra,
+                precioVenta: precioVenta,
+                stock: stock,
+                talla: talla,
+                color: color,
+                marca: {
+                    idMarca: idMarca,
+                    nombreMarca: marca
+                },
+                modelo: {
+                    idModelo: idModelo,
+                    nombreModelo: modelo
+                }
+            }
+            );
+        }
+        compras_fetch.post("https://compras-develop.herokuapp.com/api/v1/compras/new/", data, _updateTables, _logError);
+    };
+
     return {
+        updateTables: _updateTables,
+        loadPage: _loadPage,
         validateFloatNumber: _validateFloatNumber,
-        validateIntegerNumber: _validateIntegerNumber,        
+        validateIntegerNumber: _validateIntegerNumber,
         reiniciaCampos: _reiniciaCampos,
         validatePrice: _validatePrice,
-        crearRegistro: _crearRegistro,
-        cargarDatos: _cargarDatos,
         filtrarTabla: _filtrarTabla,
-        postExito: _postExito,
         putExito: _putExito,
         logError: _logError,
-        createRow: _createRow,
         createButton: _createButton,
         intToFixedLength: _intToFixedLength,
         validarTalla: _validarTalla,
-        fillSelects: _fillSelects,
         validarMarca: _validarMarca,
         validarModelo: _validarModelo,
         validarColor: _validarColor,
         iniciarSesion: _iniciarSesion,
+        showPanelCompras: _showPanelCompras,
+        showPanelProductos: _showPanelProductos,
+        showCarrito: _showCarrito,
+        crearProductoEnCarrito: _crearProductoEnCarrito,
+        confirmarCompra: _confirmarCompra,
+        borrarCarrito: _borrarCarrito,
     }
 })();

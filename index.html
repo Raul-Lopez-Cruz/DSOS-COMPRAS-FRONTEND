@@ -8,11 +8,12 @@
     <link rel="shortcut icon" type="image/png" href="ico.png">
     <title>Compras</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="css/datatables.min.css">
     <link rel="stylesheet" href="css/bootstrap.css">
     <link rel="stylesheet" href="css/compras.css">
 </head>
 
-<body class="bg-custom">
+<body>
     <!-- NAVBAR -->
     <header class="p-1 text-white nav-custom">
         <div class="container">
@@ -20,51 +21,55 @@
                 <p class="h2">
                     <i class="fa-brands fa-opencart"></i>
                 </p>
-
                 <ul class="nav col-auto col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
-                    <li><a href="#" class="nav-link ps-4 text-white disabled">Página principal</a></li>
-                    <li><a href="#" class="nav-link ps-2 text-white">Documentación</a></li>
-                    <li><a href="#" class="nav-link ps-2 text-white">GitHub</a></li>
+                    <li><a href="#" class="nav-link ps-4  disabled">Página principal</a></li>
+                    <li><a href="#" class="nav-link ps-2 ">Documentación</a></li>
+                    <li><a href="https://github.com/Raul-Lopez-Cruz/DSOS-COMPRAS-FRONTEND" class="nav-link ps-2  d-sm-block d-none">GitHub</a>
+                        <a href="https://github.com/Raul-Lopez-Cruz/DSOS-COMPRAS-FRONTEND" class="nav-link ps-2  d-sm-none">&nbsp;<i class="fa-brands fa-github">&nbsp;</i></a>
+                    </li>
                 </ul>
-
                 <div class="text-end">
-                    <button type="button" class="btn btn-s-amarillo me-2" data-bs-toggle="modal"
-                        data-bs-target="#modalLogin" id="ingresar">Ingresar</button>
-                    <button type="button" class="btn btn-s-close" id="registrarse">Registrarse</button>
-                    <button type="button" class="btn btn-s-rojo d-none" id="logout">Cerrar sesión</button>
+                    <ul class="nav col-auto col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+                        <li><a type="button" class="nav-link ps-2" data-bs-toggle="modal" data-bs-target="#modalLogin"
+                                id="ingresar"><i class="fa-solid fa-right-to-bracket"></i> Ingresar</a></li>
+                        <li><a type="button" class="nav-link ps-2 disabled" id="registrarse"><i class="fa-solid fa-user-plus"></i> Registrarse</a></li>
+                        <li><a type="button" class="nav-link ps-2 d-none" id="logout"><i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión</a></li>
+                    </ul>
                 </div>
             </div>
         </div>
     </header>
     <!-- CONTROL PANEL -->
-    <div class="container-lg my-3 py-2 px-4" id="controlPanel">
+    <div class="container-lg my-1 py-2" id="controlPanel">
         <div class="row">
             <div class="col-md-6 col-12 my-1">
-                <div class="card d-flex text-center fg-custom align-items-center justify-content-center pb-4">
-                    <div class="card-body">COMPRAR</div>
-                    <div class="d-flex align-items-center justify-content-center">
-                        <button type="button" class="btn btn-p-azul" id="btnAgregar" data-bs-toggle="modal"
-                            data-bs-target="#modalAgregarProducto"> Un modelo </button>
-                        <button type="button" class="ms-3 btn btn-s-azul" id="btnTEST"> Varios modelos </button>
+                <div class="card d-flex text-center fg-custom pb-4 h-100">
+                    <div class="card-body d-flex justify-content-center pb-0">
+                        <p class="h-100"> ¿Qué desea hacer?</p>
+                    </div>
+                    <div class=" d-flex justify-content-center">
+                        <button type="button" class=" btn btn-primary-toggle mx-2" id="btnComprar">
+                            Comprar </button>
+                        <a type="button" class="btn btn-primary mx-2" href="https://diegorevilla99.github.io/ventas/">
+                            Vender </a>
+                        <button type="button" class=" btn btn-primary mx-2" id="btnUpdate"> Actualizar </button>
                     </div>
                 </div>
             </div>
-            <div class="col-md-3 col-6 my-1">
-                <div class="card text-center fg-custom pb-4">
-                    <div class="card-body">
-                        <d class="d-none d-sm-block">MODELOS</d>
-                        <d class="d-block d-sm-none">MODELOS</d>
+            <div class="col-md-3 col-6 my-1 d-none d-md-block">
+                <div class="card text-center fg-custom pb-4 h-100">
+                    <div class="card-body pb-0">
+                        <p>Modelos diferentes</p>
                     </div>
                     <icon class="fs-3 d-inline"><i class="px-1 bi bi-columns-gap round-yellow"></i>
                         <p class="fs-3 d-inline color-amarillo" id="contadorModelos">0</p>
                     </icon>
                 </div>
             </div>
-            <div class="col-md-3 col-6 my-1">
-                <div class="card text-center fg-custom pb-4">
-                    <div class="card-body">
-                        <d class="d-none d-sm-block">ZAPATOS</d>
-                        <d class="d-block d-sm-none">ZAPATOS</d>
+            <div class="col-md-3 col-6 my-1 d-none d-md-block">
+                <div class="card text-center fg-custom pb-4 h-100">
+                    <div class="card-body pb-0">
+                        <p>Zapatos en inventario</p>
                     </div>
                     <icon class="fs-3 d-inline"><i class="px-1 bi bi-box-seam round-green"></i>
                         <p class="fs-3 d-inline color-verde" id="contadorProductos">0</p>
@@ -73,28 +78,67 @@
             </div>
         </div>
     </div>
-    <!-- Tabs navs -->
+    <!-- CARRITO -->
+    <div class="container-lg table-responsive text-nowrap fg-custom my-3 py-2" id="panelCarrito" style="display: none;">
+        <table class="table" id="tablaCarrito">
+            <thead class="table-custom-title">
+                <tr>
+                    <th scope="col" class="align-middle">Precio de compra</th>
+                    <th scope="col" class="align-middle">Precio de venta</th>
+                    <th scope="col" class="align-middle">Unidades</th>
+                    <th scope="col" class="align-middle">Talla</th>
+                    <th scope="col" class="align-middle">Color</th>
+                    <th scope="col" class="align-middle">Marca</th>
+                    <th scope="col" class="align-middle">Modelo</th>
+                    <th scope="col" class="align-middle text-center">Eliminar</th>
+                </tr>
+            </thead>
+            <tbody id="tablaCarrito-body" class="table-custom-body">
+
+            </tbody>
+        </table>
+        <div class="row d-flex mb-3 text-center align-items-center">
+
+            <div class="col-md-6 col-6 mb-1 h-100 px-1 d-flex justify-content-center">
+                <p class="h5 mb-0" id="totalCarrito">Total: $0.00</p>
+            </div>
+
+            <div class="col-md-6 col-6 mb-1 px-1  align-items-right">
+                <button type="button" class="btn rounded-pill btn-danger" id="btnBorrarCarrito">
+                    <t class="d-none d-md-block">Cancelar</t>
+                    <i class="fa-solid fa-ban d-md-none"></i>
+                </button>
+                <button type="button" class="btn rounded-pill btn-primary" id="btnAgregar" data-bs-toggle="modal"
+                    data-bs-target="#modalAgregarProducto">
+                    <t class="d-none d-md-block">Agregar producto</t>
+                    <i class="fa-solid fa-cart-plus d-md-none"></i></button>
+                <button type="button" class="btn rounded-pill btn-success" id="btnConfirmCompra">
+                    <t class="d-none d-md-block">Confirmar</t>
+                    <i class="fa-solid fa-check d-md-none"></i></button></button>
+            </div>
+
+
+        </div>
+    </div>
+    <!-- TABS -->
     <div class="container-lg ps-0 pe-3">
         <ul class="nav nav-tabs" id="ex-with-icons" role="tablist">
             <li class="nav-item" role="presentation">
-                <a class="nav-link active" id="ex-with-icons-tab-1" data-mdb-toggle="tab" href="#"
-                    role="tab" aria-controls="ex-with-icons-tabs-1" aria-selected="true"><i
+                <a class="nav-link active" id="tabProductos" data-mdb-toggle="tab" href="#" role="tab"
+                    aria-controls="ex-with-icons-tabs-1"><i
                         class="fa-solid fa-boxes-stacked"></i>&nbsp;&nbsp;Inventario</a>
             </li>
             <li class="nav-item" role="presentation">
-                <a class="nav-link" id="ex-with-icons-tab-2" data-mdb-toggle="tab" href="#"
-                    role="tab" aria-controls="ex-with-icons-tabs-2" aria-selected="false"><i
-                        class="fa-solid fa-cart-flatbed"></i>&nbsp;&nbsp;Compras</a>
+                <a class="nav-link" id="tabCompras" data-mdb-toggle="tab" href="#" role="tab"
+                    aria-controls="ex-with-icons-tabs-2"><i class="fa-solid fa-cart-flatbed"></i>&nbsp;&nbsp;Compras</a>
             </li>
         </ul>
     </div>
-    <!-- Tabs navs -->
-
     <!-- TABLA DE INVENTARIO -->
     <div class="container-lg table-responsive text-nowrap fg-custom-1 py-3" id="panelProductos">
         <input class="form-control form-control-sm input-custom2 my-3" type="text" id="searchBar"
             placeholder="Buscar producto (id, color, marca o modelo)">
-        <table class="table">
+        <table class="table" id="tablaProductos">
             <thead class="table-custom-title">
                 <tr>
                     <th scope="col" class="align-middle">ID</th>
@@ -107,13 +151,14 @@
                     <th scope="col" class="align-middle text-center">Funciones</th>
                 </tr>
             </thead>
-            <tbody id="tablaProductos" class="table-custom-body">
+            <tbody id="tablaProductos-body" class="table-custom-body">
             </tbody>
         </table>
     </div>
     <!-- TABLA DE COMPRAS -->
-    <div class="container-lg table-responsive text-nowrap fg-custom-1 py-3 d-none" id="panelCompras">
-        <table class="table">
+    <div class="container-lg table-responsive text-nowrap fg-custom-1 py-3" id="panelCompras"
+        style="display: none">
+        <table class="table" id="tablaCompras">
             <thead class="table-custom-title">
                 <tr>
                     <th scope="col" class="align-middle">ID</th>
@@ -122,7 +167,7 @@
                     <th scope="col" class="align-middle text-center">Ver detalles</th>
                 </tr>
             </thead>
-            <tbody id="tablaCompras" class="table-custom-body">
+            <tbody id="tablaCompras-body" class="table-custom-body">
             </tbody>
         </table>
     </div>
@@ -143,7 +188,7 @@
                         <div class="mb-2 position-relative">
                             <label for="create_input_pcompra">Precio de compra</label>
                             <input type="number" class="form-control input-custom" id="create_input_pcompra"
-                                placeholder="Introduce el precio de compra" min="0" max="1000000" step="0.01" required>
+                                placeholder="Digite el precio de compra" min="0" max="1000000" step="0.01" required>
                             <div class="invalid-tooltip" id="pcompra_invalid">
                                 Ingrese un valor (positivo, con o sin decimales).
                             </div>
@@ -151,15 +196,17 @@
                         <div class="mb-2 position-relative">
                             <label for="create_input_pventa">Precio de venta</label>
                             <input type="number" class="form-control input-custom" id="create_input_pventa" min="0"
-                                max="1000000" step="0.01" placeholder="Introduce el precio de venta" required>
+                                max="1000000" step="0.01" placeholder="Digite el precio de venta" required>
                             <div class="invalid-tooltip" id="pventa_invalid">
                                 Ingrese un valor (positivo, con o sin decimales).
                             </div>
                         </div>
+                        <small class="text-warning d-none" id="advertencia">Precaución: El precio de venta es igual o
+                            menor al precio de compra.</small>
                         <div class="mb-2 position-relative">
                             <label for="create_input_stock">Stock</label>
                             <input type="number" class="form-control input-custom" id="create_input_stock" min="0"
-                                step="1" max="999999" placeholder="Introduce el stock del producto" required>
+                                step="1" max="999999" placeholder="Digite las unidades a comprar" required>
                             <div class="invalid-tooltip" id="stock_invalid">
                                 Ingrese un valor entero mayor a cero.
                             </div>
@@ -167,7 +214,7 @@
                         <div class="mb-2 position-relative">
                             <label for="create_input_talla">Talla</label>
                             <select class="form-control input-custom" id="create_input_talla" required>
-                                <option selected hidden>Selecciona una talla...</option>
+                                <option selected hidden>Seleccione una talla...</option>
                                 <option value="5">5</option>
                                 <option value="5.5">5.5</option>
                                 <option value="6">6</option>
@@ -187,7 +234,7 @@
                         <div class="mb-2 position-relative">
                             <label for="create_input_color">Color</label>
                             <select class="form-control input-custom" id="create_input_color" required>
-                                <option selected hidden>Selecciona un color...</option>
+                                <option selected hidden>Seleccione un color...</option>
                                 <option value="Amarillo">Amarillo</option>
                                 <option value="Azul">Azul</option>
                                 <option value="Blanco">Blanco</option>
@@ -198,18 +245,13 @@
                                 <option value="Verde">Verde</option>
                             </select>
                             <div class="invalid-tooltip">
-                                Selecciona un color válido.
+                                Seleccione un color válido.
                             </div>
                         </div>
                         <div class="mb-2 position-relative">
                             <label for="create_input_marca">Marca</label>
                             <select class="form-control input-custom" id="create_input_marca" required>
-                                <option selected hidden>Selecciona una marca...</option>
-                                <option value="Nike">Nike</option>
-                                <option value="Adidas">Adidas</option>
-                                <option value="Reebok">Reebok</option>
-                                <option value="Converse">Converse</option>
-                                <option value="UnderArmour">UnderArmour</option>
+                                <option selected hidden>Seleccione una marca...</option>
                             </select>
                             <div class="invalid-tooltip">
                                 Debe seleccionar una marca váilda.
@@ -218,18 +260,15 @@
                         <div class="position-relative">
                             <label for="create_input_modelo">Modelo</label>
                             <select class="form-control input-custom" id="create_input_modelo" required>
-                                <option selected hidden>Primero selecciona una marca.</option>
+                                <option selected hidden>Primero seleccione una marca.</option>
                             </select>
                             <div class="invalid-tooltip">
-                                Selecciona un modelo.
+                                Seleccione un modelo.
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
-                        <small class="text-warning d-none" id="advertencia">Precaución: El precio de venta es igual o
-                            menor al
-                            precio de compra.</small>
-                        <button type="submit" id="create_ok" class="btn btn-s-verde">Guardar</button>
+                        <button type="submit" id="create_ok" class="btn btn-s-verde">Comprar</button>
                         <button type="button" id="create_cancel" class="btn btn-s-amarillo"
                             data-bs-dismiss="modal">Cancelar</button>
                     </div>
@@ -278,11 +317,9 @@
                 </div>
                 <form id="edit_Form" class="was-validated">
                     <div class="modal-body">
-                        <small class="text-muted">No se permite editar el ID</small>
-                        <div class="form-floating mb-2">
-                            <input type="text" class="form-control input-custom" id="edit_input_id" disabled="true"
-                                required>
-                            <label for="nombreProducto">ID del producto</label>
+                        <div class="mb-2 position-relative">
+                            <label for="edit_input_id">ID del producto</label>
+                            <input type="text" class="form-control input-custom" id="edit_input_id" disabled required>
                         </div>
                         <div class="mb-2 position-relative">
                             <label for="edit_input_pventa">Precio de venta</label>
@@ -316,36 +353,54 @@
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content fg-custom">
                 <div class="modal-header justify-content-center">
-                    <h3 class="modal-title text-center" id="modalLoginLabel">Iniciar Sesión &nbsp;<i class="fa-solid fa-lock-open fa-bounce"></i></h3>
+                    <h3 class="modal-title text-center" id="modalLoginLabel">Iniciar Sesión &nbsp;<i
+                            class="fa-solid fa-lock-open fa-bounce"></i></h3>
                 </div>
                 <form id="login_Form" class="needs-validation">
                     <div class="modal-body">
                         <div class="form-floating mb-3">
-                            <input type="text" class="form-control" id="userid" placeholder="name@example.com" autocomplete="username">
-                            <label for="userid">Nombre de usuario</label>
+                            <input type="text" class="form-control" id="userid" placeholder="name@example.com"
+                                autocomplete="username">
+                            <label for="userid">Nombre de usuario o correo electrónico</label>
                         </div>
                         <div class="form-floating">
-                            <input type="password" class="form-control" id="password" placeholder="Password" autocomplete="current-password">
+                            <input type="password" class="form-control" id="password" placeholder="Password"
+                                autocomplete="current-password">
                             <label for="password">Contraseña</label>
+                        </div>
+                        <div class="text-center mt-4 mb-2" role="alert" id="AuthError" style="display: none;">
+                            <t class="alert alert-danger rounded-pill">El usuario o contraseña son incorrectos.</t>
                         </div>
                     </div>
                     <div class="modal-footer justify-content-center">
-                        <button type="button" id="login" class="btn btn-p-azul">Ingresar</button>
-                        <button type="button" id="login_cancel" class="btn btn-p-dark"
+                        <button type="button" id="login" class="btn btn-primary">Ingresar</button>
+                        <button type="button" id="login_cancel" class="btn btn-secondary"
                             data-bs-dismiss="modal">Cancelar</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
+    <!-- loading modal -->
+    <div class="modal" id="loadingmodal" tabindex="-1" data-bs-backdrop="static" aria-hidden="true"
+        data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-body d1">
+                    <i class="fa-solid fa-spinner fa-5x fa-spin-pulse text-shadow"></i>
+                </div>
+            </div>
+        </div>
+    </div>
     <!-- Scripts -->
-    <script src="js/bootstrap.bundle.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.0/dist/jquery.min.js"></script>
+    <script src="js/bootstrap.bundle.js" type="text/javascript"></script>
+    <script src="js/jquery-3.6.0.min.js" type="text/javascript"></script>
     <script src="https://kit.fontawesome.com/326a4421b5.js" crossorigin="anonymous"></script>
     <script src="js/compras_auth.js" type="text/javascript"></script>
     <script src="js/compras_fetch.js" type="text/javascript"></script>
     <script src="js/compras_functions.js" type="text/javascript"></script>
     <script src="js/compras_dom.js" type="text/javascript"></script>
+    <script src="js/datatables.min.js" type="text/javascript"></script>
 </body>
 
 </html>

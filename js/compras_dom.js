@@ -10,13 +10,18 @@ const compras_dom = (() => {
     const $create_input_marca = document.getElementById("create_input_marca");
     const $create_input_modelo = document.getElementById("create_input_modelo");
     const $createOK = document.getElementById("create_ok");
-    const $btnReload = document.getElementById("btnTEST");
     const $createCancel = document.getElementById("create_cancel");
     const $searchBar = document.getElementById("searchBar");
     const $login = document.getElementById("login");
-    const $logout = document.getElementById("logout");    
+    const $logout = document.getElementById("logout");  
+    const $tabCompras = document.getElementById("tabCompras");
+    const $tabProductos = document.getElementById("tabProductos");
+    const $btnConfirmCompra = document.getElementById("btnConfirmCompra");
+    const $btnBorrarCarrito = document.getElementById("btnBorrarCarrito");
+    const $btnComprar = document.getElementById("btnComprar");
+    const $btnUpdate = document.getElementById("btnUpdate");
     // --------------- LISTENERS ---------------
-    $createOK.addEventListener("click",compras_functions.crearRegistro);
+    $createOK.addEventListener("click",compras_functions.crearProductoEnCarrito);
     $createCancel.addEventListener("click", compras_functions.reiniciaCampos);
     $create_input_pcompra.addEventListener("keyup", compras_functions.validateFloatNumber); 
     $create_input_pventa.addEventListener("keyup", compras_functions.validateFloatNumber);  
@@ -27,15 +32,18 @@ const compras_dom = (() => {
     $edit_input_stock.addEventListener("keyup", compras_functions.validateIntegerNumber);
     $create_input_talla.addEventListener("change", compras_functions.validarTalla);
     $create_input_color.addEventListener("change", compras_functions.validarColor);
-    $btnReload.addEventListener("click", () => { console.log("This feature is not available yet...") });
     $searchBar.addEventListener("keyup", compras_functions.filtrarTabla);
-    $create_input_marca.addEventListener("change", compras_functions.fillSelects);
     $create_input_marca.addEventListener("change", compras_functions.validarMarca);
     $create_input_modelo.addEventListener("change", compras_functions.validarModelo);
     $login.addEventListener("click", compras_functions.iniciarSesion);
     $logout.addEventListener("click", compras_auth.logout);
-
+    $tabCompras.addEventListener("click", compras_functions.showPanelCompras);
+    $tabProductos.addEventListener("click", compras_functions.showPanelProductos);
+    $btnComprar.addEventListener("click", compras_functions.showCarrito);
+    $btnConfirmCompra.addEventListener("click", compras_functions.confirmarCompra);
+    $btnBorrarCarrito.addEventListener("click", compras_functions.borrarCarrito);
+    $btnUpdate.addEventListener("click", compras_functions.updateTables);
     // --------------- CALLS ---------------
-    compras_fetch.get("https://compras-testing.herokuapp.com/api/compras/", compras_functions.cargarDatos, compras_functions.logError);
+    compras_functions.loadPage();
     compras_functions.reiniciaCampos();
 })();
