@@ -855,9 +855,8 @@ const compras_functions = (() => {
      */
     const _loadPage = () => {
         compras_fetch.get("https://compras-deploy.herokuapp.com/api/v1/productos/", _cargarProductos, _logError);
-        compras_fetch.get("https://compras-deploy.herokuapp.com/api/v1/compras/", _cargarCompras, _logError);
-        compras_fetch.get("https://compras-deploy.herokuapp.com/api/v1/marcas/", _cargarMarcas, _logError);
         compras_fetch.get("https://compras-deploy.herokuapp.com/api/v1/modelos/", _cargarModelos, _logError);
+        document.getElementById("btnUpdate").dispatchEvent(new Event('click'));
     }
 
     /**
