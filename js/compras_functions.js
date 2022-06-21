@@ -704,11 +704,7 @@ const compras_functions = (() => {
      * @see compras_fetch.get
      */
     const _updateTables = () => {
-        document.getElementById("btnUpdate").disabled = true;
-        compras_fetch.get("https://compras-develop.herokuapp.com/api/v1/productos/", _cargarProductos, _logError);
-        compras_fetch.get("https://compras-develop.herokuapp.com/api/v1/compras/", _cargarCompras, _logError);
-        document.getElementById("btnUpdate").disabled = false;
-        document.getElementById("btnUpdate").blur();
+        location.reload();
     };
 
     /**

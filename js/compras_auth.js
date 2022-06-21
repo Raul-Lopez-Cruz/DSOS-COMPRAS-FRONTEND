@@ -40,7 +40,7 @@ const compras_auth = (() => {
     function _getJWTFromServer(data) {
         $("#loadingmodal").modal("show");
         var xhr = new XMLHttpRequest();
-        xhr.open("POST", "https://autenticacion-t.herokuapp.com/login/auth/user", true);
+        xhr.open("POST", "https://autenticacion-p.herokuapp.com/login/auth/user", true);
         xhr.setRequestHeader("Content-Type", "application/json");
         xhr.onreadystatechange = function () {
             if (xhr.readyState == 4 && xhr.status == 200) {
