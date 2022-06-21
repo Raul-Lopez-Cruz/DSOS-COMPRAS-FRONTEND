@@ -369,7 +369,7 @@
 
     <!-- Formulario para iniciar sesión -->
     <div class="modal fade" id="modalLogin" tabindex="-1" role="dialog" aria-labelledby="modalLoginLabel"
-        aria-hidden="true" data-bs-keyboard="false"  data-bs-backdrop="static">
+        aria-hidden="true" data-bs-keyboard="false" data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-centered" role="document">
             <div class="modal-content fg-custom">
                 <div class="modal-header justify-content-center">
@@ -398,6 +398,53 @@
                             data-bs-dismiss="modal">Cancelar</button>
                     </div>
                 </form>
+            </div>
+        </div>
+    </div>
+    <!-- /// -->
+
+    <!-- Panel de visualización de detalles -->
+    <div class="modal modal-xl fade" id="modalDetalles" tabindex="-1" role="dialog" aria-labelledby="modalDetallesLabel"
+        aria-hidden="true" data-bs-keyboard="false">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content fg-custom">
+                <div class="modal-header justify-content-center">
+                    <h3 class="modal-title text-center" id="modalDetalles">Detalles de la compra</h4>
+                </div>
+                <div class="modal-body table-responsive text-nowrap">
+                    <h5 id="detalles-label"></h5>
+                    <table class="table" id="tablaDetalles">
+                        <thead class="table-custom-title">
+                            <tr>
+                                <th scope="col" class="align-middle">ID</th>
+                                <th scope="col" class="align-middle">Marca</th>
+                                <th scope="col" class="align-middle">Modelo</th>
+                                <th scope="col" class="align-middle">Talla</th>
+                                <th scope="col" class="align-middle">Color</th>
+                                <th scope="col" class="align-middle">Precio de compra</th>
+                                <th scope="col" class="align-middle">Unidades</th>
+                                <th scope="col" class="align-middle">Total</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tablaDetalles-body" class="table-custom-body">
+                        </tbody>
+                        <tbody class="table-custom-footer">
+                            <tr>
+                                <th scope="col" class="align-middle"></th>
+                                <th scope="col" class="align-middle"></th>
+                                <th scope="col" class="align-middle"></th>
+                                <th scope="col" class="align-middle"></th>
+                                <th scope="col" class="align-middle"></th>
+                                <th scope="col" class="align-middle"></th>
+                                <th scope="col" class="align-middle">TOTAL</th>
+                                <th scope="col" class="align-middle" id="totalDetalle"></th>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Cerrar</button>
+                </div>
+                
             </div>
         </div>
     </div>

@@ -14,7 +14,6 @@
     background-color: transparent;
     border: 1px solid transparent;
     padding: 0.469rem 1.375rem;
-    font-size: 0.9375rem;
     border-radius: 0.25rem;
     transition: all .2s ease-in-out;
     /*font sans serif*/
@@ -712,6 +711,12 @@ body {
     color: #ffffff;
 }
 
+.table-custom-footer{
+    background-color: #283144;
+    color: #ffffff;
+    border-bottom: none;
+}
+
 .table-custom-title2{
     background-color: #3b4864;
     color: #ffffff;
@@ -734,9 +739,10 @@ tbody tr:hover th{
     color: #a1b0cb;
 }
 
-.table-custom-body2{
-    background-color: #3b4864;
+tbody.table-custom-footer tr th{
+    background-color: #283144;
     color: #a1b0cb;
+    border-bottom: none;
 }
 
 .table-custom-body th{

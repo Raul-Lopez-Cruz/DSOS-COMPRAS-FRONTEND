@@ -244,8 +244,7 @@ const compras_functions = (() => {
         const $icon = document.createElement("i");
         $button.appendChild($icon);
         var $cell;
-
-        if (opcion == 0) {
+        if (opcion == BORRAR) {
             $button.className = "btn btn-label-danger mx-1";
             $icon.className = "fa-solid fa-trash-can";
             $button.addEventListener("click", (event) => {
@@ -266,7 +265,7 @@ const compras_functions = (() => {
                 });
                 $('#modalConfirmarEliminar').modal('show');
             });
-        } else if (opcion == 1) {
+        } else if (opcion == EDITAR) {
             $button.className = "btn btn-label-warning mx-1";
             $icon.className = "fa-solid fa-pen-to-square";
             $button.addEventListener("click", (event) => {
@@ -298,9 +297,23 @@ const compras_functions = (() => {
                 });
                 $('#modalEditarProducto').modal('show');
             });
-        } else {
-            $button.className = "btn btn-s-azul mx-1";
-            $icon.className = "bi bi-eye";
+        } else if (opcion == DETALLES) {
+            $button.className = "btn btn-label-info mx-1";
+            $icon.className = "fa-solid fa-question";
+            $button.addEventListener("click", (event) => {
+                if ($(event.target).is("i"))
+                    $cell = event.target.parentElement.parentElement;
+                else
+                    $cell = event.target.parentElement;
+                var $row = $cell.parentElement;
+                var temp_id = $row.querySelector('.columnaID').innerText;
+                //empty table tablaDetalles-body
+                var tablaDetallesBody = document.getElementById("tablaDetalles-body");
+                tablaDetallesBody.innerHTML = "";
+                compras_fetch.get("https://compras-develop.herokuapp.com/api/v1/compras-detalle/" + parseInt(temp_id), _cargarDetalles, _logError);
+                $('#modalDetalles').modal('show');
+            });
+
         }
 
         return $button;
@@ -491,7 +504,7 @@ const compras_functions = (() => {
             const marca = document.getElementById("create_input_marca").options[document.getElementById("create_input_marca").selectedIndex].text;
             const idModelo = document.getElementById("create_input_modelo").value;
             const modelo = document.getElementById("create_input_modelo").options[document.getElementById("create_input_modelo").selectedIndex].text;
-            data={
+            data = {
                 "precioCompra": precioCompra,
                 "precioVenta": precioVenta,
                 "stock": stock,
@@ -502,7 +515,7 @@ const compras_functions = (() => {
                 "idModelo": idModelo,
                 "modelo": modelo
             }
-            _createProductoRow("carrito",data);
+            _createProductoRow("carrito", data);
 
             $('#modalAgregarProducto').modal('hide');
             form.classList.remove("was-validated");
@@ -529,7 +542,7 @@ const compras_functions = (() => {
             const marca = response.data[index].marca.nombreMarca;
             const modelo = response.data[index].modelo.nombreModelo;
             sumaTotal = sumaTotal + response.data[index].stock;
-            data={
+            data = {
                 "idProducto": idProducto,
                 "precioVenta": precioVenta,
                 "stock": stock,
@@ -538,7 +551,7 @@ const compras_functions = (() => {
                 "marca": marca,
                 "modelo": modelo
             }
-            _createProductoRow("inventario",data);
+            _createProductoRow("inventario", data);
         }
         document.getElementById("contadorModelos").innerText = response.data.length;
         document.getElementById("contadorProductos").innerText = sumaTotal;
@@ -607,6 +620,55 @@ const compras_functions = (() => {
                 }
             }
         });
+    }
+
+    /**
+     * Obtiene los atributos del detalle de la compra, que incluyen id de la compra, fecha y productos adquiridos.
+     * Coloca estos atributos en una tabla del modal de detalle de compra.
+     * @param {JSON} response  Objeto JSON que contiene un arreglo de detalles de compra con sus atributos
+     */
+    const _cargarDetalles = (response) => {
+        detalles_label = document.getElementById("detalles-label");
+        var date = new Date(response.data[0].fechaAdquirido);
+        var day = date.getDate();
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear();
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        detalles_label.innerText = "ID de la compra: "+ response.data[0].idCompra + "\xa0\xa0\xa0-\xa0\xa0\xa0Realizada el " + day + "/" + month + "/" + year + " a las " + hours + ":" + minutes;
+        tablaDetallesBody = document.getElementById("tablaDetalles-body");
+        sumaTotal = 0;
+        for (let index = 0; index < response.data[1].length; index++) {
+            const row = document.createElement("tr");
+            const idProducto = document.createElement("td");
+            const marca = document.createElement("td");
+            const modelo = document.createElement("td");
+            const talla = document.createElement("td");
+            const color = document.createElement("td");
+            const precioCompra = document.createElement("td");
+            const unidades = document.createElement("td");
+            const total = document.createElement("td");
+            idProducto.innerText = _intToFixedLength(response.data[1][index].producto.idProducto,4);
+            marca.innerText = response.data[1][index].producto.marca.nombreMarca;
+            modelo.innerText = response.data[1][index].producto.modelo.nombreModelo;
+            talla.innerText = response.data[1][index].producto.talla;
+            color.innerText = response.data[1][index].producto.color;
+            precioCompra.innerText = _toMoneyFormat(response.data[1][index].producto.precioCompra);
+            unidades.innerText = response.data[1][index].producto.stock;
+            total.innerText = _toMoneyFormat(response.data[1][index].producto.precioCompra * response.data[1][index].producto.stock);
+            sumaTotal += response.data[1][index].producto.precioCompra * response.data[1][index].producto.stock;
+            row.appendChild(idProducto);
+            row.appendChild(marca);
+            row.appendChild(modelo);
+            row.appendChild(talla);
+            row.appendChild(color);
+            row.appendChild(precioCompra);
+            row.appendChild(unidades);
+            row.appendChild(total);
+            tablaDetallesBody.appendChild(row);
+        }
+        const totalDetalle = document.getElementById("totalDetalle");
+        totalDetalle.innerText = _toMoneyFormat(sumaTotal);
     }
 
     /**
@@ -682,6 +744,10 @@ const compras_functions = (() => {
         console.log("Algo salió mal...", response);
     };
 
+    /**
+     * Obtiene los datos de inicio de sesión introducidos por el usuario y los envía a compras_auth, en donde son evaluados.
+     * @see compras_auth.login
+     */
     const _iniciarSesion = () => {
         const usuario = document.getElementById("userid").value;
         const contraseña = document.getElementById("password").value;
@@ -792,8 +858,8 @@ const compras_functions = (() => {
         var row = table.getElementsByTagName("tr");
         var data = [];
         for (let index = 0; index < row.length; index++) {
-            const precioCompra = row[index].childNodes[0].innerText.replace(/\$|\s/g, '');
-            const precioVenta = row[index].childNodes[1].innerText.replace(/\$|\s/g, '');
+            const precioCompra =  parseFloat(row[index].childNodes[0].innerText.replace(/\$|\s/g, ''));
+            const precioVenta = parseFloat(row[index].childNodes[1].innerText.replace(/\$|\s/g, ''));
             const stock = row[index].childNodes[2].innerText;
             const talla = row[index].childNodes[3].innerText;
             const color = row[index].childNodes[4].innerText;
@@ -823,24 +889,24 @@ const compras_functions = (() => {
     };
 
     return {
-        updateTables: _updateTables,
-        loadPage: _loadPage,
-        validateFloatNumber: _validateFloatNumber,
+        crearProductoEnCarrito: _crearProductoEnCarrito,
         validateIntegerNumber: _validateIntegerNumber,
+        validateFloatNumber: _validateFloatNumber,
+        showPanelProductos: _showPanelProductos,
+        showPanelCompras: _showPanelCompras,
+        confirmarCompra: _confirmarCompra,
         reiniciaCampos: _reiniciaCampos,
         validarPrecios: _validarPrecios,
+        borrarCarrito: _borrarCarrito,
+        validarModelo: _validarModelo,
+        iniciarSesion: _iniciarSesion,
+        updateTables: _updateTables,
         filtrarTabla: _filtrarTabla,
-        logError: _logError,
         validarTalla: _validarTalla,
         validarMarca: _validarMarca,
-        validarModelo: _validarModelo,
         validarColor: _validarColor,
-        iniciarSesion: _iniciarSesion,
-        showPanelCompras: _showPanelCompras,
-        showPanelProductos: _showPanelProductos,
         showCarrito: _showCarrito,
-        crearProductoEnCarrito: _crearProductoEnCarrito,
-        confirmarCompra: _confirmarCompra,
-        borrarCarrito: _borrarCarrito,
+        loadPage: _loadPage,
+        logError: _logError,
     }
 })();
