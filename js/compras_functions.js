@@ -9,9 +9,9 @@ const compras_functions = (() => {
 
     /**
      * Crea una fila con los datos de una compra y lo agrega a la tabla de Compras
-     * @param {number} id Id del producto
-     * @param {number} total Total de la compra
-     * @param {number} fecha Fecha de la compra
+     * @param {Number} id Id del producto
+     * @param {Number} total Total de la compra
+     * @param {Number} fecha Fecha de la compra
      */
     const _createCompraRow = (id, total, fecha) => {
         const $row = document.createElement("tr");
@@ -40,7 +40,7 @@ const compras_functions = (() => {
      * @see _toMoneyFormat
      * @see _intToFixedLength
      */
-    const _createProdRow = (objetivo, datos) => {
+    const _createProductoRow = (objetivo, datos) => {
         /*Creación de elementos*/
         const $row = document.createElement("tr");
         const $celda_pventa = document.createElement("td"); $celda_pventa.classList.add("columnaPVenta");
@@ -97,16 +97,16 @@ const compras_functions = (() => {
 
     /**
      * @Deprecated
-     * @see _createProdRow
+     * @see _createProductoRow
      * 
      * Crea una fila con los datos de un producto y lo agrega a la tabla de Carrito de compras
-     * @param {number} precioCompra precio de compra del producto (por unidad)
-     * @param {number} precioVenta precio de venta del producto (por unidad)
-     * @param {number} stock stock del producto
-     * @param {number} talla talla del producto
-     * @param {string} color color del producto
-     * @param {string} marca marca del producto
-     * @param {string} modelo modelo del producto
+     * @param {Number} precioCompra precio de compra del producto (por unidad)
+     * @param {Number} precioVenta precio de venta del producto (por unidad)
+     * @param {Number} stock stock del producto
+     * @param {Number} talla talla del producto
+     * @param {String} color color del producto
+     * @param {String} marca marca del producto
+     * @param {String} modelo modelo del producto
      */
     const _createCarritoRow = (precioCompra, precioVenta, stock, talla, color, idMarca, marca, idModelo, modelo) => {
         const $row = document.createElement("tr");
@@ -149,18 +149,18 @@ const compras_functions = (() => {
 
     /**
      * @Deprecated
-     * @see _createProdRow
+     * @see _createProductoRow
      * 
      * Crea una fila con los datos de un producto y lo agrega a la tabla de Productos
-     * @param {number} id Id del producto
-     * @param {number} precioVenta precio de venta del producto
-     * @param {number} stock stock del producto
-     * @param {number} talla talla del producto
-     * @param {string} color color del producto
-     * @param {string} marca marca del producto
-     * @param {string} modelo modelo del producto
+     * @param {Number} id Id del producto
+     * @param {Number} precioVenta precio de venta del producto
+     * @param {Number} stock stock del producto
+     * @param {Number} talla talla del producto
+     * @param {String} color color del producto
+     * @param {String} marca marca del producto
+     * @param {String} modelo modelo del producto
      */
-    const _createProductoRow = (id, precioVenta, stock, talla, color, marca, modelo) => {
+    const _createInventarioRow = (id, precioVenta, stock, talla, color, marca, modelo) => {
         const $row = document.createElement("tr");
         const $celda_id = document.createElement("th"); $celda_id.scope = "row"; $celda_id.classList.add("columnaID");
         const $celda_pventa = document.createElement("td"); $celda_pventa.classList.add("columnaPVenta");
@@ -199,7 +199,7 @@ const compras_functions = (() => {
 
     /**
      * Actualiza el número de productos y el número de modelos totales (desplegados en el panel de control)
-     * @param {number} stock El número de productos que se agregaron 
+     * @param {Number} stock El número de productos que se agregaron 
      */
     const _updateAfterCreate = (stock) => {
         contadorModelos = document.getElementById("contadorModelos");
@@ -212,7 +212,7 @@ const compras_functions = (() => {
 
     /**
      * Actualiza el número de productos y el número de modelos totales (desplegados en el panel de control)
-     * @param {number} stock El número de productos que tenía el modelo antes de ser borrado
+     * @param {Number} stock El número de productos que tenía el modelo antes de ser borrado
      */
     const updateAfterDelete = (stock) => {
         contadorModelos = document.getElementById("contadorModelos");
@@ -225,8 +225,8 @@ const compras_functions = (() => {
 
     /**
      * Actualiza el número de productos totales (desplegado en el panel de control)
-     * @param {number} oldStock la cantidad de productos antes de la modificación
-     * @param {number} newStock la cantidad de productos despues de la modificación
+     * @param {Number} oldStock la cantidad de productos antes de la modificación
+     * @param {Number} newStock la cantidad de productos despues de la modificación
      */
     const _updateAfterPut = (oldStock, newStock) => {
         contadorProductos = document.getElementById("contadorProductos");
@@ -236,7 +236,7 @@ const compras_functions = (() => {
 
     /**
      * Crea un botón y le asigna una clase y una función dependiendo del tipo de botón requerido por el parámetro
-     * @param {number} opcion Opción del botón que se desea crear: BORRAR = 0, EDITAR = 1, DETALLES = 2
+     * @param {Number} opcion Opción del botón que se desea crear: BORRAR = 0, EDITAR = 1, DETALLES = 2
      * @returns un elemento de tipo <button> con un estilo y función asignada de forma dinámica
      */
     const _createButton = (opcion) => {
@@ -308,8 +308,8 @@ const compras_functions = (() => {
 
     /**
      * Agrega ceros a la izquierda de un número para que tenga una longitud determinada
-     * @param {number} int es el número al que se le quiere agregar ceros a la izquierda
-     * @param {number} len es el tamaño esperado de la cadena de caracteres
+     * @param {Number} int es el número al que se le quiere agregar ceros a la izquierda
+     * @param {Number} len es el tamaño esperado de la cadena de caracteres
      * @returns una cadena de caracteres con el número y ceros a la izquierda
      */
     const _intToFixedLength = (int, len) => {
@@ -323,7 +323,7 @@ const compras_functions = (() => {
 
     /**
      * Transforma un número en una cadena de caracteres con el formato de moneda
-     * @param {number} value un número entero o flotante que se quiere formatear
+     * @param {Number} value un número entero o flotante que se quiere formatear
      * @returns una cadena de caracteres con el número formateado
      * 
      * @example _formatMoney(123.456) => '$ 123.46'
@@ -474,7 +474,7 @@ const compras_functions = (() => {
      * Valida todos los campos del formulario que llama al evento, si son válidos obtiene los valores de los campos y llama a la función _createCarritoRow
      * para agregar una fila, con los datos ingresados, a la tabla de carrito
      * @param {event} target el evento que llama a la función
-     * @see _createProdRow
+     * @see _createProductoRow
      */
     const _crearProductoEnCarrito = (target) => {
         target.preventDefault();
@@ -502,7 +502,7 @@ const compras_functions = (() => {
                 "idModelo": idModelo,
                 "modelo": modelo
             }
-            _createProdRow("carrito",data);
+            _createProductoRow("carrito",data);
 
             $('#modalAgregarProducto').modal('hide');
             form.classList.remove("was-validated");
@@ -513,7 +513,7 @@ const compras_functions = (() => {
     /**
      * Obtiene los atributos de cada producto en la respuesta de la petición GET, y crea una fila por cada producto
      * @param {JSON} response Objeto JSON que contiene un arreglo de productos con sus atributos
-     * @see _createProductoRow
+     * @see _createInventarioRow
      */
     const _cargarProductos = (response) => {
         console.log(response.data);
@@ -538,7 +538,7 @@ const compras_functions = (() => {
                 "marca": marca,
                 "modelo": modelo
             }
-            _createProdRow("inventario",data);
+            _createProductoRow("inventario",data);
         }
         document.getElementById("contadorModelos").innerText = response.data.length;
         document.getElementById("contadorProductos").innerText = sumaTotal;
