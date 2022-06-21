@@ -1,6 +1,10 @@
 const compras_auth = (() => {
 
-    // Guarda el token en una cookie
+    /**
+     * Guarda el token en una cookie que expira 30 minutos después de la hora de creación o al finalizar la sesión.
+     * @param {string} jwt El token a guardar.
+     * @see {@link https://developer.mozilla.org/es/docs/Web/API/Document/cookie}
+     */
     function _saveJWT(jwt) {
         var c = document.cookie;
         if (c == "") {
@@ -14,7 +18,10 @@ const compras_auth = (() => {
         document.cookie = "jwt=" + jwt + ";" + expires + ";path=/;samesite=strict";
     }
 
-    // Obtiene el token de la cookie
+    /**
+     * Obtiene el token almacenado en la cookie.
+     * @returns {string} El token almacenado en la cookie; en caso de no existir devuelve null.
+     */
     function _getJWT() {
         let jwt = document.cookie.split(";").find(cookie => cookie.startsWith("jwt="));
         if (jwt) {
@@ -24,7 +31,12 @@ const compras_auth = (() => {
         }
     }
 
-    //xmlHttpRequest para obtener el JWT y pasarlo a la función saveJWT
+    /**
+     * Hace una petición XHR al servidor de autenticación, enviando credenciales. Si son correctas, guarda el token recibido en una cookie.
+     * @param {JSON} data Objeto JSON que contiene los datos de usuario y contraseña para ser enviados al servidor.
+     * @see _saveJWT
+     * @see {@link https://developer.mozilla.org/es/docs/Web/API/XMLHttpRequest}
+     */
     function _getJWTFromServer(data) {
         $("#loadingmodal").modal("show");
         var xhr = new XMLHttpRequest();
@@ -58,7 +70,9 @@ const compras_auth = (() => {
         xhr.send(JSON.stringify(data));
     }
 
-    //logout function which deletes the JWT cookie
+    /**
+     * Función que se ejecuta al cerrar sesión. Destruye la cookie que contiene el token de autenticación.
+     */
     function _logout() {
         $("#loadingmodal").modal("show");
         var jwt = document.cookie.split(";").find(cookie => cookie.startsWith("jwt="));

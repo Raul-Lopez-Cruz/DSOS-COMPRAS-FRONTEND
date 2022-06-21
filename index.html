@@ -5,8 +5,10 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="shortcut icon" type="image/png" href="ico.png">
     <title>Compras</title>
+    <!-- Favicon -->
+    <link rel="shortcut icon" type="image/png" href="ico.png">
+    <!-- CSS --->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="css/datatables.min.css">
     <link rel="stylesheet" href="css/bootstrap.css">
@@ -14,7 +16,7 @@
 </head>
 
 <body>
-    <!-- NAVBAR -->
+    <!-- Barra de navegación -->
     <header class="p-1 text-white nav-custom">
         <div class="container">
             <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start nav-custom">
@@ -24,22 +26,28 @@
                 <ul class="nav col-auto col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                     <li><a href="#" class="nav-link ps-4  disabled">Página principal</a></li>
                     <li><a href="#" class="nav-link ps-2 ">Documentación</a></li>
-                    <li><a href="https://github.com/Raul-Lopez-Cruz/DSOS-COMPRAS-FRONTEND" class="nav-link ps-2  d-sm-block d-none">GitHub</a>
-                        <a href="https://github.com/Raul-Lopez-Cruz/DSOS-COMPRAS-FRONTEND" class="nav-link ps-2  d-sm-none">&nbsp;<i class="fa-brands fa-github">&nbsp;</i></a>
+                    <li><a href="https://github.com/Raul-Lopez-Cruz/DSOS-COMPRAS-FRONTEND"
+                            class="nav-link ps-2  d-sm-block d-none">GitHub</a>
+                        <a href="https://github.com/Raul-Lopez-Cruz/DSOS-COMPRAS-FRONTEND"
+                            class="nav-link ps-2  d-sm-none">&nbsp;<i class="fa-brands fa-github">&nbsp;</i></a>
                     </li>
                 </ul>
                 <div class="text-end">
                     <ul class="nav col-auto col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
                         <li><a type="button" class="nav-link ps-2" data-bs-toggle="modal" data-bs-target="#modalLogin"
                                 id="ingresar"><i class="fa-solid fa-right-to-bracket"></i> Ingresar</a></li>
-                        <li><a type="button" class="nav-link ps-2 disabled" id="registrarse"><i class="fa-solid fa-user-plus"></i> Registrarse</a></li>
-                        <li><a type="button" class="nav-link ps-2 d-none" id="logout"><i class="fa-solid fa-right-from-bracket"></i> Cerrar sesión</a></li>
+                        <li><a type="button" class="nav-link ps-2 disabled" id="registrarse"><i
+                                    class="fa-solid fa-user-plus"></i> Registrarse</a></li>
+                        <li><a type="button" class="nav-link ps-2 d-none" id="logout"><i
+                                    class="fa-solid fa-right-from-bracket"></i> Cerrar sesión</a></li>
                     </ul>
                 </div>
             </div>
         </div>
     </header>
-    <!-- CONTROL PANEL -->
+    <!-- /// -->
+
+    <!-- Panel de control -->
     <div class="container-lg my-1 py-2" id="controlPanel">
         <div class="row">
             <div class="col-md-6 col-12 my-1">
@@ -78,7 +86,9 @@
             </div>
         </div>
     </div>
-    <!-- CARRITO -->
+    <!-- /// -->
+
+    <!-- Carrito de compras -->
     <div class="container-lg table-responsive text-nowrap fg-custom my-3 py-2" id="panelCarrito" style="display: none;">
         <table class="table" id="tablaCarrito">
             <thead class="table-custom-title">
@@ -94,15 +104,12 @@
                 </tr>
             </thead>
             <tbody id="tablaCarrito-body" class="table-custom-body">
-
             </tbody>
         </table>
         <div class="row d-flex mb-3 text-center align-items-center">
-
             <div class="col-md-6 col-6 mb-1 h-100 px-1 d-flex justify-content-center">
                 <p class="h5 mb-0" id="totalCarrito">Total: $0.00</p>
             </div>
-
             <div class="col-md-6 col-6 mb-1 px-1  align-items-right">
                 <button type="button" class="btn rounded-pill btn-danger" id="btnBorrarCarrito">
                     <t class="d-none d-md-block">Cancelar</t>
@@ -111,16 +118,18 @@
                 <button type="button" class="btn rounded-pill btn-primary" id="btnAgregar" data-bs-toggle="modal"
                     data-bs-target="#modalAgregarProducto">
                     <t class="d-none d-md-block">Agregar producto</t>
-                    <i class="fa-solid fa-cart-plus d-md-none"></i></button>
+                    <i class="fa-solid fa-cart-plus d-md-none"></i>
+                </button>
                 <button type="button" class="btn rounded-pill btn-success" id="btnConfirmCompra">
                     <t class="d-none d-md-block">Confirmar</t>
-                    <i class="fa-solid fa-check d-md-none"></i></button></button>
+                    <i class="fa-solid fa-check d-md-none"></i>
+                </button></button>
             </div>
-
-
         </div>
     </div>
-    <!-- TABS -->
+    <!-- /// -->
+
+    <!-- Tabs (pestañas de los contenedores de las tablas de inventario y compras) -->
     <div class="container-lg ps-0 pe-3">
         <ul class="nav nav-tabs" id="ex-with-icons" role="tablist">
             <li class="nav-item" role="presentation">
@@ -134,7 +143,9 @@
             </li>
         </ul>
     </div>
-    <!-- TABLA DE INVENTARIO -->
+    <!-- /// -->
+
+    <!-- Tabla de inventario -->
     <div class="container-lg table-responsive text-nowrap fg-custom-1 py-3" id="panelProductos">
         <input class="form-control form-control-sm input-custom2 my-3" type="text" id="searchBar"
             placeholder="Buscar producto (id, color, marca o modelo)">
@@ -155,9 +166,10 @@
             </tbody>
         </table>
     </div>
-    <!-- TABLA DE COMPRAS -->
-    <div class="container-lg table-responsive text-nowrap fg-custom-1 py-3" id="panelCompras"
-        style="display: none">
+    <!-- /// -->
+
+    <!-- Tabla de compras -->
+    <div class="container-lg table-responsive text-nowrap fg-custom-1 py-3" id="panelCompras" style="display: none">
         <table class="table" id="tablaCompras">
             <thead class="table-custom-title">
                 <tr>
@@ -171,7 +183,9 @@
             </tbody>
         </table>
     </div>
-    <!-- FORM CREATE -->
+    <!-- /// -->
+
+    <!-- Formulario para crear productos -->
     <div class="modal fade" id="modalAgregarProducto" tabindex="-1" role="dialog"
         aria-labelledby="modalAgregarProductoLabel" aria-hidden="true" data-bs-backdrop="static"
         data-bs-keyboard="false" aria-labelledby="staticBackdropLabel">
@@ -276,7 +290,9 @@
             </div>
         </div>
     </div>
-    <!-- FORM DELETE -->
+    <!-- /// -->
+
+    <!-- Formulario para borrar productos -->
     <div class="modal fade" id="modalConfirmarEliminar" tabindex="-1" role="dialog" data-bs-backdrop="static"
         aria-labelledby="modalConfirmarEliminarLabel" aria-hidden="true" data-bs-keyboard="false"
         aria-labelledby="staticBackdropLabel">
@@ -303,7 +319,9 @@
             </div>
         </div>
     </div>
-    <!-- FORM EDIT -->
+    <!-- /// -->
+
+    <!-- Formulario para editar productos -->
     <div class="modal fade" id="modalEditarProducto" tabindex="-1" role="dialog" data-bs-backdrop="static"
         aria-labelledby="modalEditarProductoLabel" aria-hidden="true" data-bs-keyboard="false"
         aria-labelledby="staticBackdropLabel">
@@ -347,7 +365,9 @@
             </div>
         </div>
     </div>
-    <!-- FORM LOGIN -->
+    <!-- /// -->
+
+    <!-- Formulario para iniciar sesión -->
     <div class="modal fade" id="modalLogin" tabindex="-1" role="dialog" aria-labelledby="modalLoginLabel"
         aria-hidden="true" data-bs-keyboard="false"  data-bs-backdrop="static">
         <div class="modal-dialog modal-dialog-centered" role="document">
@@ -381,7 +401,9 @@
             </div>
         </div>
     </div>
-    <!-- loading modal -->
+    <!-- /// -->
+
+    <!-- Animación de carga -->
     <div class="modal" id="loadingmodal" tabindex="-1" data-bs-backdrop="static" aria-hidden="true"
         data-bs-keyboard="false">
         <div class="modal-dialog modal-dialog-centered">
@@ -392,6 +414,8 @@
             </div>
         </div>
     </div>
+    <!-- /// -->
+
     <!-- Scripts -->
     <script src="js/bootstrap.bundle.js" type="text/javascript"></script>
     <script src="js/jquery-3.6.0.min.js" type="text/javascript"></script>
