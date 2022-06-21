@@ -84,7 +84,6 @@ const compras_auth = (() => {
                 $("#registrarse").removeClass("d-none");
                 $("#logout").addClass("d-none");
                 console.log("Has cerrado sesión.");
-                location.reload();
             }, 500);
         }
     }
