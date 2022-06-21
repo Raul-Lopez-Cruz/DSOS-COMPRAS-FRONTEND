@@ -44,6 +44,7 @@ const compras_dom = (() => {
     $tabProductos.addEventListener("click", compras_functions.showPanelProductos);
     $tabCompras.addEventListener("click", compras_functions.showPanelCompras);
     // --------------- CALLS ---------------
+    compras_functions.checkIfAlreadyLoggedIn();
     compras_functions.loadPage();
     compras_functions.reiniciaCampos();
 })();

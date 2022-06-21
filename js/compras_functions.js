@@ -291,7 +291,7 @@ const compras_functions = (() => {
                             precioVenta: parseFloat(document.getElementById("edit_input_pventa").value),
                             stock: parseInt(document.getElementById("edit_input_stock").value)
                         };
-                        compras_fetch.put("https://compras-develop.herokuapp.com/api/v1/productos/" + parseInt(temp_id), data, _putExito, _logError);
+                        compras_fetch.put("https://compras-deploy.herokuapp.com/api/v1/productos/" + parseInt(temp_id), data, _putExito, _logError);
                         $('#modalEditarProducto').modal('hide');
                     }
                 });
@@ -310,7 +310,7 @@ const compras_functions = (() => {
                 //empty table tablaDetalles-body
                 var tablaDetallesBody = document.getElementById("tablaDetalles-body");
                 tablaDetallesBody.innerHTML = "";
-                compras_fetch.get("https://compras-develop.herokuapp.com/api/v1/compras-detalle/" + parseInt(temp_id), _cargarDetalles, _logError);
+                compras_fetch.get("https://compras-deploy.herokuapp.com/api/v1/compras-detalle/" + parseInt(temp_id), _cargarDetalles, _logError);
                 $('#modalDetalles').modal('show');
             });
 
@@ -555,7 +555,6 @@ const compras_functions = (() => {
         }
         document.getElementById("contadorModelos").innerText = response.data.length;
         document.getElementById("contadorProductos").innerText = sumaTotal;
-        console.log("Contenido cargado correctamente.");
     };
 
     /**
@@ -574,7 +573,6 @@ const compras_functions = (() => {
             const fechaAdquirido = response.data[index].fechaAdquirido;
             _createCompraRow(idCompra, total, fechaAdquirido);
         }
-        console.log("Contenido cargado correctamente.");
     };
 
     /**
@@ -635,7 +633,7 @@ const compras_functions = (() => {
         var year = date.getFullYear();
         var hours = date.getHours();
         var minutes = date.getMinutes();
-        detalles_label.innerText = "ID de la compra: "+ response.data[0].idCompra + "\xa0\xa0\xa0-\xa0\xa0\xa0Realizada el " + day + "/" + month + "/" + year + " a las " + hours + ":" + minutes;
+        detalles_label.innerText = "ID de la compra: " + response.data[0].idCompra + "\xa0\xa0\xa0-\xa0\xa0\xa0Realizada el " + day + "/" + month + "/" + year + " a las " + hours + ":" + minutes;
         tablaDetallesBody = document.getElementById("tablaDetalles-body");
         sumaTotal = 0;
         for (let index = 0; index < response.data[1].length; index++) {
@@ -648,7 +646,7 @@ const compras_functions = (() => {
             const precioCompra = document.createElement("td");
             const unidades = document.createElement("td");
             const total = document.createElement("td");
-            idProducto.innerText = _intToFixedLength(response.data[1][index].producto.idProducto,4);
+            idProducto.innerText = _intToFixedLength(response.data[1][index].producto.idProducto, 4);
             marca.innerText = response.data[1][index].producto.marca.nombreMarca;
             modelo.innerText = response.data[1][index].producto.modelo.nombreModelo;
             talla.innerText = response.data[1][index].producto.talla;
@@ -699,12 +697,45 @@ const compras_functions = (() => {
 
     /**
      * Hace dos peticiones GET para actualizar los datos de las tablas de productos y compras.
+     * Reinicia y asigna eventos dinámicamente al botón de actualizar.
      * @see _cargarProductos
      * @see _cargarCompras
      * @see compras_fetch.get
      */
     const _updateTables = () => {
-        location.reload();
+        var aux = document.getElementById("btnUpdate");
+        aux.parentNode.replaceChild(aux.cloneNode(1), aux);
+        aux = document.getElementById("btnUpdate");
+        compras_fetch.get("https://compras-deploy.herokuapp.com/api/v1/productos/", _cargarProductos, _logError);
+        compras_fetch.get("https://compras-deploy.herokuapp.com/api/v1/compras/", _cargarCompras, _logError);
+        const tablaCompras = $('#tablaCompras').DataTable({
+            language: {
+                url: 'utils/es-ES.json'
+            },
+            ordering: false,
+            "pageLength": 10,
+            "lengthChange": false,
+            "searching": false,
+            "pagingType": "simple",
+            "autoWidth": true,
+        });
+        const tablaProdcutos = $('#tablaProductos').DataTable({
+            language: {
+                url: 'utils/es-ES.json'
+            },
+            ordering: false,
+            "pageLength": 10,
+            "lengthChange": false,
+            "searching": false,
+            "pagingType": "simple",
+            "autoWidth": true,
+        });
+        aux.addEventListener("click", (() => {
+            tablaProdcutos.destroy();
+            tablaCompras.destroy();
+            _updateTables();
+        }));
+        console.log("Las tablas se han actualizado correctamente.")
     };
 
     /**
@@ -813,34 +844,10 @@ const compras_functions = (() => {
      * @see compras_fetch.get
      */
     const _loadPage = () => {
-        compras_fetch.get("https://compras-develop.herokuapp.com/api/v1/productos/", _cargarProductos, _logError);
-        compras_fetch.get("https://compras-develop.herokuapp.com/api/v1/compras/", _cargarCompras, _logError);
-        compras_fetch.get("https://compras-develop.herokuapp.com/api/v1/marcas/", _cargarMarcas, _logError);
-        compras_fetch.get("https://compras-develop.herokuapp.com/api/v1/modelos/", _cargarModelos, _logError);
-        $(document).ready(function () {
-            $('#tablaCompras').DataTable({
-                language: {
-                    url: 'utils/es-ES.json'
-                },
-                ordering: false,
-                "pageLength": 10,
-                "lengthChange": false,
-                "searching": false,
-                "pagingType": "simple",
-                "autoWidth": true,
-            });
-            $('#tablaProductos').DataTable({
-                language: {
-                    url: 'utils/es-ES.json'
-                },
-                ordering: false,
-                "pageLength": 10,
-                "lengthChange": false,
-                "searching": false,
-                "pagingType": "simple",
-                "autoWidth": true,
-            });
-        });
+        compras_fetch.get("https://compras-deploy.herokuapp.com/api/v1/productos/", _cargarProductos, _logError);
+        compras_fetch.get("https://compras-deploy.herokuapp.com/api/v1/compras/", _cargarCompras, _logError);
+        compras_fetch.get("https://compras-deploy.herokuapp.com/api/v1/marcas/", _cargarMarcas, _logError);
+        compras_fetch.get("https://compras-deploy.herokuapp.com/api/v1/modelos/", _cargarModelos, _logError);
     }
 
     /**
@@ -854,7 +861,7 @@ const compras_functions = (() => {
         var row = table.getElementsByTagName("tr");
         var data = [];
         for (let index = 0; index < row.length; index++) {
-            const precioCompra =  parseFloat(row[index].childNodes[0].innerText.replace(/\$|\s/g, ''));
+            const precioCompra = parseFloat(row[index].childNodes[0].innerText.replace(/\$|\s/g, ''));
             const precioVenta = parseFloat(row[index].childNodes[1].innerText.replace(/\$|\s/g, ''));
             const stock = row[index].childNodes[2].innerText;
             const talla = row[index].childNodes[3].innerText;
@@ -880,11 +887,30 @@ const compras_functions = (() => {
             }
             );
         }
-        compras_fetch.post("https://compras-develop.herokuapp.com/api/v1/compras/new/", data, _updateTables, _logError);
+        compras_fetch.post("https://compras-deploy.herokuapp.com/api/v1/compras/new/", data,
+            document.getElementById("btnUpdate").dispatchEvent(new Event('click')), _logError);
         _borrarCarrito();
     };
 
+    /**
+     * Al cargar la página valida si has iniciado sesión anteriormente, es decir, varifica
+     * si existe un JWT en el navegador, si es así, inicia sesión automáticamente.
+     * @returns nothing
+     * @see compras_auth.getJWT
+     */
+    const _checkIfAlreadyLoggedIn = () => {
+        let jwt = compras_auth.getJWT();
+        if (jwt === null) {
+            return;
+        }
+        $("#ingresar").addClass("d-none");
+        $("#registrarse").addClass("d-none");
+        $("#logout").removeClass("d-none");
+        console.log("Tu sesión sigue abierta");
+    };
+
     return {
+        checkIfAlreadyLoggedIn: _checkIfAlreadyLoggedIn,
         crearProductoEnCarrito: _crearProductoEnCarrito,
         validateIntegerNumber: _validateIntegerNumber,
         validateFloatNumber: _validateFloatNumber,
