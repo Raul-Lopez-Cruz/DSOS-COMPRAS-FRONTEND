@@ -258,6 +258,11 @@ const compras_functions = (() => {
                 aux.parentNode.replaceChild(aux.cloneNode(1), aux);
                 aux = document.getElementById("delete_ok");
                 aux.addEventListener("click", () => {
+                    let jwt = compras_auth.getJWT();
+                    if (jwt === null) {
+                        alert("Debe iniciar sesión para realizar esta acción");
+                        return;
+                    }
                     compras_fetch.delete("https://compras-testing.herokuapp.com/api/compras/" + id);
                     $row.parentNode.removeChild($row);
                     updateAfterDelete($row.querySelector('.columnaStock').innerText);
@@ -284,6 +289,11 @@ const compras_functions = (() => {
                 aux.parentNode.replaceChild(aux.cloneNode(1), aux);
                 aux = document.getElementById("edit_ok");
                 aux.addEventListener("click", () => {
+                    let jwt = compras_auth.getJWT();
+                    if (jwt === null) {
+                        alert("Debe iniciar sesión para realizar esta acción");
+                        return;
+                    }
                     var todoOK = document.getElementById("edit_Form").checkValidity();
                     if (todoOK) {
                         data = {
@@ -755,8 +765,8 @@ const compras_functions = (() => {
                 row[index].childNodes[2].innerText = response.data.stock;
                 row[index].childNodes[3].innerText = response.data.talla;
                 row[index].childNodes[4].innerText = response.data.color;
-                row[index].childNodes[5].innerText = response.data.marca;
-                row[index].childNodes[6].innerText = response.data.modelo;
+                row[index].childNodes[5].innerText = response.data.marca.nombreMarca;
+                row[index].childNodes[6].innerText = response.data.modelo.nombreModelo;
             }
         }
         _updateAfterPut(oldStock, response.data.stock);
@@ -857,6 +867,11 @@ const compras_functions = (() => {
      * @see compras_fetch.post
      */
     const _confirmarCompra = () => {
+        let jwt = compras_auth.getJWT();
+        if (jwt === null) {
+            alert("Debe iniciar sesión para realizar esta acción");
+            return;
+        }
         var table = document.getElementById("tablaCarrito-body");
         var row = table.getElementsByTagName("tr");
         var data = [];
