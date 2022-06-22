@@ -6,16 +6,8 @@ const compras_auth = (() => {
      * @see {@link https://developer.mozilla.org/es/docs/Web/API/Document/cookie}
      */
     function _saveJWT(jwt) {
-        var c = document.cookie;
-        if (c == "") {
-            document.cookie = "jwt=" + jwt;
-        } else {
-            document.cookie = "jwt=" + jwt;
-        }
-        var d = new Date();
-        d.setTime(d.getTime() + (30 * 60 * 1000));        
-        var expires = "expires=" + d.toUTCString();
-        document.cookie = "jwt=" + jwt + ";" + expires + ";path=/;samesite=strict";
+        //save jwt in a cookie with samesite, secure and a lifetime of 30 mins
+        document.cookie = `jwt=${jwt}; expires=${new Date(Date.now() + 30 * 60 * 1000).toUTCString()}; path=/; samesite=strict; secure`;
     }
 
     /**
